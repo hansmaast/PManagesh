@@ -1,4 +1,5 @@
 import React from "react";
+import EmployeeList from "../components/EmployeeList";
 import TestCard from "../components/TestCard";
 
 export default () => {
@@ -6,6 +7,8 @@ export default () => {
     <div>
       <h2>Home</h2>
       <TestCard />
+
+      <EmployeeList />
     </div>
   );
 };
