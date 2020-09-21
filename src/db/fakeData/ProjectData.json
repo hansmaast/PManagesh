@@ -4,7 +4,7 @@
     "name": "Trippledex",
     "description": "Quisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus.\n\nPhasellus in felis. Donec semper sapien a libero. Nam dui.",
     "status": "in progress",
-    "employeeId": 6,
+    "employeeIds": [6, 2],
     "costumerId": 8
   },
   {
@@ -12,7 +12,7 @@
     "name": "Konklab",
     "description": "Nullam porttitor lacus at turpis. Donec posuere metus vitae ipsum. Aliquam non mauris.",
     "status": "done",
-    "employeeId": 4,
+    "employeeIds": [4, 3],
     "costumerId": 3
   },
   {
@@ -20,7 +20,7 @@
     "name": "Toughjoyfax",
     "description": "Integer ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.\n\nNam ultrices, libero non mattis pulvinar, nulla pede ullamcorper augue, a suscipit nulla elit ac nulla. Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus.\n\nCurabitur at ipsum ac tellus semper interdum. Mauris ullamcorper purus sit amet nulla. Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam.",
     "status": "done",
-    "employeeId": 7,
+    "employeeIds": [7, 8],
     "costumerId": 5
   },
   {
@@ -28,7 +28,7 @@
     "name": "Matsoft",
     "description": "Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo. Morbi ut odio.",
     "status": "in progress",
-    "employeeId": 8,
+    "employeeIds": [1, 2],
     "costumerId": 9
   },
   {
@@ -36,7 +36,7 @@
     "name": "Transcof",
     "description": "Fusce consequat. Nulla nisl. Nunc nisl.\n\nDuis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa. Donec dapibus. Duis at velit eu est congue elementum.\n\nIn hac habitasse platea dictumst. Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo.",
     "status": "not active",
-    "employeeId": 5,
+    "employeeIds": [5, 9],
     "costumerId": 4
   },
   {
@@ -44,7 +44,7 @@
     "name": "Zontrax",
     "description": "Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.\n\nInteger ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.\n\nNam ultrices, libero non mattis pulvinar, nulla pede ullamcorper augue, a suscipit nulla elit ac nulla. Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus.",
     "status": "in progress",
-    "employeeId": 3,
+    "employeeIds": [6, 2],
     "costumerId": 10
   },
   {
@@ -52,7 +52,7 @@
     "name": "Stronghold",
     "description": "Integer ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.\n\nNam ultrices, libero non mattis pulvinar, nulla pede ullamcorper augue, a suscipit nulla elit ac nulla. Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus.",
     "status": "done",
-    "employeeId": 6,
+    "employeeIds": [4, 2],
     "costumerId": 6
   },
   {
@@ -60,7 +60,7 @@
     "name": "Holdlamis",
     "description": "Aliquam quis turpis eget elit sodales scelerisque. Mauris sit amet eros. Suspendisse accumsan tortor quis turpis.\n\nSed ante. Vivamus tortor. Duis mattis egestas metus.\n\nAenean fermentum. Donec ut mauris eget massa tempor convallis. Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh.",
     "status": "not active",
-    "employeeId": 9,
+    "employeeIds": [6, 7],
     "costumerId": 4
   },
   {
@@ -68,7 +68,7 @@
     "name": "Lotstring",
     "description": "Fusce consequat. Nulla nisl. Nunc nisl.\n\nDuis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa. Donec dapibus. Duis at velit eu est congue elementum.\n\nIn hac habitasse platea dictumst. Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo.",
     "status": "in progress",
-    "employeeId": 8,
+    "employeeIds": [8, 5],
     "costumerId": 7
   },
   {
@@ -76,7 +76,7 @@
     "name": "Opela",
     "description": "Aenean fermentum. Donec ut mauris eget massa tempor convallis. Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh.\n\nQuisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est. Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros.\n\nVestibulum ac est lacinia nisi venenatis tristique. Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue. Aliquam erat volutpat.",
     "status": "done",
-    "employeeId": 10,
+    "employeeIds": [10, 7],
     "costumerId": 4
   }
 ]
