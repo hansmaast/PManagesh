@@ -34,7 +34,9 @@ export default () => {
                     <Card.Text>Full list of all your projects</Card.Text>
                     <Folder />
                   </Card.Body>
-                  <Card.Footer></Card.Footer>
+                  <Card.Footer>
+                    <ArrowRight />
+                  </Card.Footer>
                 </Card>
               </Link>
               <Link to="/costumers" style={{ textDecoration: "none" }}>
