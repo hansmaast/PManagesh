@@ -3,9 +3,11 @@ import { Alert, Button, Col, Form, Modal } from "react-bootstrap";
 import { addEmployeeToDb } from "../../db/actions";
 import { employeeModel } from "../../db/models";
 import { containsDuplicate } from "../../utils/containsDuplicate";
+import { AlertWithLink } from "../alerts/AlertCostume";
 
 export const CreateEmployeeModal = ( { currentEmployees, ...props } ) => {
   const [ employee, setEmployee ] = useState( { ...employeeModel } );
+  const [ alertData, setAlertData ] = useState( { show: false, textInLink: '', id: null } )
   const [ employeeId, setEmployeeId ] = useState( null );
   const [ showSuccess, setShowSuccess ] = useState( false );
   const [ emailExists, setEmailExists ] = useState( false );
@@ -147,14 +149,21 @@ export const CreateEmployeeModal = ( { currentEmployees, ...props } ) => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          {
-            showSuccess &&
-            <Alert variant={ 'success' }>
-              Added new employee{ ' ' }
-              <Alert.Link
-                  href={ `/employees/${ employeeId }` }>{ `${ employee.firstName } ${ employee.lastName }` }</Alert.Link>!
-            </Alert>
-          }
+          <AlertWithLink
+              text={ 'Added new employee' }
+              linkTo={ `/employees/${ employeeId }` }
+              linkText={ `${ employee.firstName } ${ employee.lastName }` }
+              variant={ 'success' }
+              show={ showSuccess }
+          />
+          {/*{*/}
+          {/*  showSuccess &&*/}
+          {/*  <Alert variant={ 'success' }>*/}
+          {/*    Added new employee{ ' ' }*/}
+          {/*    <Alert.Link*/}
+          {/*        href={ `/employees/${ employeeId }` }>{ `${ employee.firstName } ${ employee.lastName }` }</Alert.Link>!*/}
+          {/*  </Alert>*/}
+          {/*}*/}
           <Button variant={ 'secondary' } onClick={ props.onHide }>Close</Button>
         </Modal.Footer>
       </Modal>
