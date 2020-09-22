@@ -3,43 +3,34 @@ import { getProjects } from "../db/actions";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { CreateProjectModal } from "../components/modals/CreateProjectModal";
+import ProjectCard from "../components/Cards/ProjectCard";
+import LayoutStyle from "../components/LayoutStyle";
 
 export default () => {
-
-  const [ projects, setProjects ] = useState( [] );
+  const [projects, setProjects] = useState([]);
   const [showModal, setShowModal] = React.useState(false);
 
-  useEffect( () => {
+  useEffect(() => {
     const fetchProjects = async () => {
       const projectsFromDb = await getProjects();
-      setProjects( [ ...projects, ...projectsFromDb ] );
-    }
+      setProjects([...projects, ...projectsFromDb]);
+    };
     fetchProjects();
-  }, [] )
+  }, []);
 
   return (
-      <div>
-        <h4>Projects:</h4>
-        <ul>
-          {
-            projects.map( project => {
-              return (
-                  <Link to={ `projects/${ project.id }` } key={ project.id }>
-                    <li>{ project.name }</li>
-                  </Link>
-              )
-            } )
+    <div>
+      <h4>Projects:</h4>
+      <LayoutStyle>
+        {projects.map((project) => {
+          return <ProjectCard project={project} />;
+        })}
+      </LayoutStyle>
+      <Button variant="primary" onClick={() => setShowModal(true)}>
+        Add new project
+      </Button>
 
-          }
-        </ul>
-        <Button variant="primary" onClick={() => setShowModal(true)}>
-          Add new project
-        </Button>
-
-        <CreateProjectModal
-            show={showModal}
-            onHide={() => setShowModal(false)}
-        />
-      </div>
+      <CreateProjectModal show={showModal} onHide={() => setShowModal(false)} />
+    </div>
   );
-}
+};
