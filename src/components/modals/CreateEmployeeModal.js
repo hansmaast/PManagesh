@@ -3,7 +3,7 @@ import { Alert, Button, Col, Form, Modal } from "react-bootstrap";
 import { addEmployeeToDb } from "../../db/actions";
 import { employeeModel } from "../../db/models";
 import { containsDuplicate } from "../../utils/containsDuplicate";
-import { AlertWithLink } from "../alerts/AlertCostume";
+import { AlertWithLink } from "../alerts/AlertWithLink";
 
 export const CreateEmployeeModal = ( { currentEmployees, ...props } ) => {
   const [ employee, setEmployee ] = useState( { ...employeeModel } );

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Modal } from "react-bootstrap";
 import { addProjectToDb, getCostumers, getEmployees } from "../../db/actions";
 import { projectModel } from "../../db/models";
-import { AlertWithLink } from "../alerts/AlertCostume";
+import { AlertWithLink } from "../alerts/AlertWithLink";
 
 export const CreateProjectModal = props => {
   const [ project, setProject ] = useState( { ...projectModel } );

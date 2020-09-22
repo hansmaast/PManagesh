@@ -1,18 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import NavBar from "./components/NavBar";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import NotFound from "./components/NotFound";
 import { initDb } from "./db/utils/initDb";
-import { Costumers, EmployeeDetails, Employees, Home, ProjectDetails, Projects } from "./pages";
-
+import { Costumers, EmployeeDetails, Employees, Home, ProjectDetails, Projects, } from "./pages";
+import Team from "../src/pages/Team";
 
 function App() {
   useEffect( () => {
     const init = async () => {
       await initDb();
-    }
+    };
     init();
-  }, [] )
+  }, [] );
   return (
       <>
         <BrowserRouter>
@@ -32,6 +32,9 @@ function App() {
             </Route>
             <Route exact path="/costumers">
               <Costumers/>
+            </Route>
+            <Route exact path="/team">
+              <Team/>
             </Route>
             <Route exact path="/">
               <Home/>
