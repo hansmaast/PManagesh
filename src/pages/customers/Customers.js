@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { addCostumerToDb, getCostumers } from "../db/actions";
-import { containsDuplicate } from "../utils/containsDuplicate";
-import LayoutStyle from "../components/LayoutStyle";
-import CustomerCard from "../components/Cards/CustomerCard";
+import { addCostumerToDb, getCostumers } from "../../db/actions";
+import { containsDuplicate } from "../../utils/containsDuplicate";
+import LayoutStyle from "../../components/LayoutStyle";
+import CustomerCard from "../../components/Cards/CustomerCard";
 
 export default () => {
   const [costumers, setCostumers] = useState([]);

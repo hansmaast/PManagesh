@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Card, Col, Row, Container } from "react-bootstrap";
-import { CreateEmployeeModal } from "../components/modals/CreateEmployeeModal";
-import { getEmployees } from "../db/actions";
-import LayoutStyle from "../components/LayoutStyle";
-import EmployeeCard from "../components/Cards/EmployeeCard";
+import { CreateEmployeeModal } from "../../components/modals/CreateEmployeeModal";
+import { getEmployees } from "../../db/actions";
+import LayoutStyle from "../../components/LayoutStyle";
+import EmployeeCard from "../../components/Cards/EmployeeCard";
 
 export default () => {
   const [employees, setEmployees] = useState([{}]);

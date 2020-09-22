@@ -1,6 +1,6 @@
-export {default as Home} from './Home';
-export {default as Projects} from './Projects';
-export {default as Costumers} from './Costumers';
-export {default as Employees} from './Employees';
-export {default as ProjectDetails} from './ProjectDetails';
-export {default as EmployeeDetails} from './EmployeeDetails';
+export {default as Home} from './home/Home';
+export {default as Projects} from './projects/Projects';
+export {default as Costumers} from './customers/Customers';
+export {default as Employees} from './employees/Employees';
+export {default as ProjectDetails} from './projects/ProjectDetails';
+export {default as EmployeeDetails} from './employees/EmployeeDetails';

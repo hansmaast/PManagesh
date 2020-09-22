@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getProjects } from "../db/actions";
+import { getProjects } from "../../db/actions";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
-import { CreateProjectModal } from "../components/modals/CreateProjectModal";
-import ProjectCard from "../components/Cards/ProjectCard";
-import LayoutStyle from "../components/LayoutStyle";
+import { CreateProjectModal } from "../../components/modals/CreateProjectModal";
+import ProjectCard from "../../components/Cards/ProjectCard";
+import LayoutStyle from "../../components/LayoutStyle";
 
 export default () => {
   const [projects, setProjects] = useState([]);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getProjectDetails } from "../db/actions";
+import { getProjectDetails } from "../../db/actions";
 
 export default () => {
   const [ project, setProject ] = useState( null );
