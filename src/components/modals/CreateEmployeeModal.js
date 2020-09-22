@@ -135,7 +135,7 @@ export const CreateEmployeeModal = ( { currentEmployees, ...props } ) => {
                               defaultValue={ 'Choose position..' }
                               required
                 >
-                  <option>Choose..</option>
+                  <option value={""}>Choose..</option>
                   <option value={ 'Developer' }>Developer</option>
                   <option value={ 'Musketeer' }>Musketeer</option>
                   <option value={ 'Designer' }>Designer</option>

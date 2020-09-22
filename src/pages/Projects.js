@@ -3,6 +3,8 @@ import { getProjects } from "../db/actions";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { CreateProjectModal } from "../components/modals/CreateProjectModal";
+import ProjectCard from "../components/Cards/ProjectCard";
+import LayoutStyle from "../components/LayoutStyle";
 
 export default () => {
   const [projects, setProjects] = useState([]);
@@ -19,24 +21,16 @@ export default () => {
   return (
     <div>
       <h4>Projects:</h4>
-      <ul>
+      <LayoutStyle>
         {projects.map((project) => {
-          return (
-            <Link to={`projects/${project.id}`} key={project.id}>
-              <li>{project.name}</li>
-            </Link>
-          );
+          return <ProjectCard project={project} />;
         })}
-      </ul>
+      </LayoutStyle>
       <Button variant="primary" onClick={() => setShowModal(true)}>
         Add new project
       </Button>
 
-      <CreateProjectModal
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        currentProjects={projects}
-      />
+      <CreateProjectModal show={showModal} onHide={() => setShowModal(false)} />
     </div>
   );
 };

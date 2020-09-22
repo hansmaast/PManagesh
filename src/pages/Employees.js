@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Button, Card, Col, Row, Container } from "react-bootstrap";
 import { CreateEmployeeModal } from "../components/modals/CreateEmployeeModal";
 import { getEmployees } from "../db/actions";
+import LayoutStyle from "../components/LayoutStyle";
+import EmployeeCard from "../components/Cards/EmployeeCard";
 
 export default () => {
   const [employees, setEmployees] = useState([{}]);
@@ -19,16 +21,15 @@ export default () => {
 
   return (
     <div>
-      <h4>Employees:</h4>
-      <ul>
+      <br></br>
+      <h4 style={{ textAlign: "center" }}>Employees:</h4>
+      <br></br>
+      <LayoutStyle>
         {employees.map((employee) => {
-          return (
-            <Link to={`employees/${employee.id}`} key={employee.id}>
-              <li>{employee.firstName}</li>
-            </Link>
-          );
+          return <EmployeeCard employee={employee} />;
         })}
-      </ul>
+      </LayoutStyle>
+      <br></br>
 
       <Button variant="primary" onClick={() => setShowModal(true)}>
         Add new employee
