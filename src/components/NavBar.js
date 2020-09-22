@@ -23,4 +23,4 @@ export default () => {
         </Navbar.Collapse>
       </Navbar>
   );
-}
+};

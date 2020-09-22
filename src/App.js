@@ -5,8 +5,8 @@ import NotFound from "./components/NotFound";
 import { initDb } from "./db/utils/initDb";
 import { Costumers, EmployeeDetails, Employees, Home, ProjectDetails, Projects } from "./pages";
 
-function App() {
 
+function App() {
   useEffect( () => {
     const init = async () => {
       await initDb();
