@@ -1,91 +1,38 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Card, Row, Col, Container, CardDeck } from "react-bootstrap";
-import { ArrowRight, Briefcase, Folder, User } from "react-feather";
+import React, { useEffect, useState } from "react";
+import { Container } from "react-bootstrap";
+import { Folder } from "react-feather";
+import { getProjects } from "../../db/actions";
+import Form from "react-bootstrap/Form";
+import FormControl from "react-bootstrap/FormControl";
+import Button from "react-bootstrap/Button";
+import { useSearchArray } from "../../utils/hooks/useSearchArray";
+import { CardLink } from "../../components/Cards/CardLink";
+import ProjectsRow from "../../containers/ProjectsRow";
 
 export default () => {
+  const [ projects, setProjects ] = useState( [] );
+  const [ filteredProjects, setFilteredProjects ] = useState( [] );
+  const [ showModal, setShowModal ] = React.useState( { type: '', show: false } );
+  const [ searchTerm, setSearchtTerm ] = useState( '' );
+
+  const fetchProjects = async () => {
+    const projectsFromDb = await getProjects();
+    setProjects( [ ...projects, ...projectsFromDb ] );
+    setFilteredProjects( [ ...projectsFromDb ] )
+  };
+
+  useSearchArray( 'name', searchTerm, projects, setFilteredProjects );
+
+  useEffect( () => {
+    fetchProjects();
+  }, [] );
+
+
   return (
-    <div>
-      <Container>
-        <Row>
-          <Col
-            xs={12}
-            sm={8}
-            md={10}
-            lg={12}
-            xl={12}
-            style={{ margin: "5rem" }}
-            className="mb-5"
-          >
-            <CardDeck>
-              <Link to="/projects" style={{ textDecoration: "none" }}>
-                <Card
-                  bg="dark"
-                  text="light"
-                  style={{
-                    width: "18rem",
-                    height: "15rem",
-                    marginBottom: "2rem",
-                  }}
-                >
-                  <Card.Img variant="top" />
-                  <Card.Body>
-                    <Card.Title>Projects</Card.Title>
-                    <Card.Text>Full list of all your projects</Card.Text>
-                    <Folder />
-                  </Card.Body>
-                  <Card.Footer>
-                    <ArrowRight />
-                  </Card.Footer>
-                </Card>
-              </Link>
-              <Link to="/costumers" style={{ textDecoration: "none" }}>
-                <Card
-                  bg="dark"
-                  text="light"
-                  style={{
-                    width: "18rem",
-                    height: "15rem",
-                    marginBottom: "2rem",
-                  }}
-                >
-                  <Card.Img variant="top" />
-                  <Card.Body>
-                    <Card.Title>Clients</Card.Title>
-                    <Card.Text>Full overview over all your clients</Card.Text>
-                    <Briefcase />
-                  </Card.Body>
-                  <Card.Footer>
-                    <ArrowRight />
-                  </Card.Footer>
-                </Card>
-              </Link>
-              <Link to="/employees" style={{ textDecoration: "none" }}>
-                {" "}
-                <Card
-                  bg="dark"
-                  text="light"
-                  style={{
-                    width: "18rem",
-                    height: "15rem",
-                    marginBottom: "2rem",
-                  }}
-                >
-                  <Card.Img variant="top" />
-                  <Card.Body>
-                    <Card.Title>Employees</Card.Title>
-                    <Card.Text>Full overview over all employees</Card.Text>
-                    <User />
-                  </Card.Body>
-                  <Card.Footer>
-                    <ArrowRight />
-                  </Card.Footer>
-                </Card>
-              </Link>
-            </CardDeck>
-          </Col>
-        </Row>
-      </Container>
-    </div>
+      <div>
+        <Container className={ 'pt-5 px-5' }>
+          <ProjectsRow />
+        </Container>
+      </div>
   );
 };
