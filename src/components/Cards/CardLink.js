@@ -11,6 +11,7 @@ export const CardLink = ( { to, title, text, icon, refProp } ) => {
         style={ {
           width: "18rem",
           height: "15rem",
+          borderRadius: 10
         } }
     >
       <Card.Img variant="top"/>

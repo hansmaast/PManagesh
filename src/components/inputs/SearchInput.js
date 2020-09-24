@@ -6,9 +6,9 @@ import PropTypes from "prop-types";
 
 export const SearchInput = ( { value, onChange } ) => {
   return (
-      <Form className={ 'ml-3' } inline>
+      <Form className={ 'my-3' } inline>
         <FormControl value={ value } onChange={ e => onChange( e ) } type="text" placeholder="Search"
-                     className="mr-sm-2"/>
+                     className="mr-2"/>
         <Search/>
       </Form>
   );

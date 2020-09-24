@@ -5,7 +5,7 @@ import { ArrowLeftCircle } from "react-feather";
 export const FlexBetweenHorizontal = ({ children}) => {
 
   return (
-      <Row style={ { display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' } }>
+      <Row className={'px-3'} style={ {  border: '1px solid',   } }>
         {children}
       </Row>
   );

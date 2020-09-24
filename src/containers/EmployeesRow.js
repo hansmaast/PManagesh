@@ -1,38 +1,38 @@
 import React, { useEffect, useRef, useState } from "react";
 import Container from "react-bootstrap/Container";
-import { getProjects } from "../db/actions";
+import { getEmployees } from "../db/actions";
 import { useSearchArray } from "../utils/hooks/useSearchArray";
-import { CreateProjectModal } from "../components/modals/CreateProjectModal";
 import { ScrollRowArrows } from "../components/wrappers/ScrollRowArrows";
 import { SearchInput } from "../components/inputs/SearchInput";
 import { scrollElementWidth } from "../utils/scrollElementWidth";
 import { PlussButton } from "../components/buttons/PlussButton";
 import Row from "react-bootstrap/Row";
+import { CreateEmployeeModal } from "../components/modals/CreateEmployeeModal";
 
-export default (props) => {
-  const [ projects, setProjects ] = useState( [] );
-  const [ filteredProjects, setFilteredProjects ] = useState( [] );
+export default () => {
+  const [ data, setData ] = useState( [] );
+  const [ filteredData, setFilteredData ] = useState( [] );
   const [ showModal, setShowModal ] = React.useState( false );
   const [ searchTerm, setSearchTerm ] = useState( '' );
 
   const fetchProjects = async () => {
-    const projectsFromDb = await getProjects();
-    setProjects( [ ...projects, ...projectsFromDb ] );
-    setFilteredProjects( [ ...projectsFromDb ] )
+    const projectsFromDb = await getEmployees();
+    setData( [ ...data, ...projectsFromDb ] );
+    setFilteredData( [ ...projectsFromDb ] )
   };
 
   const cardRef = useRef( null );
   const rowRef = useRef( null )
 
-  useSearchArray( 'name', searchTerm, projects, setFilteredProjects );
+  useSearchArray( 'firstName', searchTerm, data, setFilteredData );
 
   useEffect( () => {
     fetchProjects();
   }, [] );
 
   return (
-      <Container style={{marginTop: '12rem'}} fluid>
-        <h1 className={ 'm-0' }> Projects </h1>
+      <Container style={ { marginTop: '12rem' } } fluid>
+        <h1 className={ 'm-0' }> Employees </h1>
         <Row className={ 'px-3' }>
           <SearchInput
               value={ searchTerm }
@@ -45,9 +45,9 @@ export default (props) => {
             onLeftClick={ () => scrollElementWidth( false, 3, cardRef, rowRef ) }
             rowRef={ rowRef }
             cardRef={ cardRef }
-            data={ filteredProjects }
+            data={ filteredData }
         />
-        <CreateProjectModal show={ showModal } onHide={ () => {
+        <CreateEmployeeModal show={ showModal } onHide={ () => {
           setShowModal( false );
           fetchProjects();
         } }/>
