@@ -20,7 +20,7 @@ function App() {
     <>
       <BrowserRouter>
         <BackgroundImage>
-        <NavBar />
+        <NavBar/>
         <Switch>
           <Route exact path="/projects">
             <Projects />
@@ -28,17 +28,11 @@ function App() {
           <Route exact path="/projects/:id">
             <ProjectDetails />
           </Route>
-          <Route exact path="/employees">
+          <Route path="/employees">
             <Employees />
           </Route>
-          <Route exact path="/employees/:id">
-            <EmployeeDetails />
-          </Route>
-          <Route exact path="/costumers">
+          <Route  path="/costumers">
             <Costumers />
-          </Route>
-          <Route exact path="/team">
-            <Team />
           </Route>
           <Route exact path="/">
             <Home />

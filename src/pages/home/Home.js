@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Container } from "react-bootstrap";
-import ProjectsRow from "../../containers/ProjectsRow";
-import EmployeesRow from "../../containers/EmployeesRow";
+import ProjectsRow from "../projects/Projects";
+import EmployeesRow from "../employees/Employees";
 import { getProjects } from "../../db/actions";
+import { Flex } from "../../components/wrappers/Flex";
+import Employees from "../employees/Employees";
 
 
 export default () => {
@@ -17,12 +19,11 @@ export default () => {
 
   return (
       <>
-        <Container className={ ' ' }>
+        <Container className={ 'mt-5' }>
           <ProjectsRow/>
-          <EmployeesRow/>
-          <EmployeesRow/>
-          <EmployeesRow/>
-          <EmployeesRow/>
+          <Flex justifyContent={"center"} alignItems={'center'}>
+          <Employees/>
+          </Flex>
         </Container>
       </>
   );

@@ -1,11 +1,14 @@
 import { getTotalWidth } from "./getTotalWidth";
 
 export const scrollElementWidth = ( toRight = true, times, element, row ) => {
-  const totalWidth = getTotalWidth( element );
-  console.log( 'scrolling row -> ', row );
-  console.log( 'total width -> ', totalWidth );
+  console.log( 'element ->',element)
+  console.log( 'row ->', row)
+  if ( element && row ) {
+    const totalWidth = getTotalWidth( element );
 
-  toRight
-      ? row.current.scrollLeft += totalWidth * times
-      : row.current.scrollLeft -= totalWidth * times;
+    return toRight
+        ? row.current.scrollLeft += totalWidth * times
+        : row.current.scrollLeft -= totalWidth * times;
+
+  }
 }

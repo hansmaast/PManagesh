@@ -17,5 +17,5 @@ export const employeeModel = {
   lastName: '',
   age: '',
   position: '',
-  currentProjectIds: [],
+  projectIds: [],
 }

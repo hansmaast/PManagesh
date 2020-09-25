@@ -21,6 +21,10 @@ export const getEmployeesFromProject = async ( { employeeIds } ) => {
   return await getByIdsFromTable( employeeIds, employeeTable );
 }
 
+export const getProjectsFromEmployee = async ( { projectIds } ) => {
+  return await getByIdsFromTable( projectIds, projectTable );
+}
+
 export const getProjectDetails = async id => {
   return await parseProject( id );
 }

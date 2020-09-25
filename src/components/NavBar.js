@@ -1,12 +1,16 @@
 import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
+import { Flex } from "./wrappers/Flex";
+import { navBarColor } from "../style/colors";
+import { largeScreen } from "../style/dimensions";
 
 export default () => {
-  // just an example, needs customising
+
   return (
-      <div style={{width: '100vw',background: 'inherit'}} bg="light">
-      <Navbar className={'mx-auto px-5'} style={{maxWidth: 1400, height: 100}} collapseOnSelect expand="lg" bg="light" variant="light">
+      <Flex justifyContent={ 'center' } backgroundColor={ navBarColor }>
+        <Navbar className={ 'mx-auto px-5 py-4' } style={ { width: '100%', maxWidth: largeScreen } } collapseOnSelect
+                expand="lg" bg={ navBarColor }>
           <Navbar.Brand href="/">Pingo Manager</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
           <Navbar.Collapse id="responsive-navbar-nav">
@@ -19,7 +23,7 @@ export default () => {
               <Nav.Link href="/team">Pingo Team</Nav.Link>
             </Nav>
           </Navbar.Collapse>
-      </Navbar>
-      </div>
+        </Navbar>
+      </Flex>
   );
 };

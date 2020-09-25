@@ -2,27 +2,8 @@ import { ArrowLeftCircle, ArrowRightCircle } from "react-feather";
 import Button from "react-bootstrap/Button";
 import PropTypes from "prop-types";
 import React from "react";
-
-const baseButtonStyle = {
-  position: 'absolute',
-  top: '50%',
-  borderRadius: 100,
-  padding: 0,
-  background: 'white',
-  color: 'black',
-  border: 'none',
-
-};
-const leftButtonStyle = {
-  ...baseButtonStyle,
-  left: 0,
-  transform: 'translate(-150%, -50%)',
-};
-const rightButtonStyle = {
-  ...baseButtonStyle,
-  right: 0,
-  transform: 'translate(150%, -50%)',
-};
+import { leftButtonStyle, rightButtonStyle } from "../../style/buttons";
+import { ScaleOnHover } from "../effects/ScaleOnHover";
 
 export function ArrowButton( props ) {
 
@@ -39,7 +20,9 @@ export function ArrowButton( props ) {
 
   return (
       <Button onClick={ props.onClick } style={ buttonStyle }>
-        { icon }
+        <ScaleOnHover scaleTo={ 1.1 }>
+          { icon }
+        </ScaleOnHover>
       </Button>
   );
 }
