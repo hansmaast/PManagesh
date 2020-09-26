@@ -40,7 +40,7 @@ export default () => {
           </Row>
           <ScrollRowArrows data={ filteredData }
           />
-          <CreateEmployeeModal show={ showModal } onHide={ () => {
+          <CreateEmployeeModal currentEmployees={employees} show={ showModal } onHide={ () => {
             setShowModal( false );
             fetchProjects();
           } }/>
@@ -53,3 +53,5 @@ export default () => {
       </Container>
   );
 };
+
+// TODO: Add assign project to employee functionality

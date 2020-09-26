@@ -6,8 +6,8 @@ import { CreateProjectModal } from "../../components/modals/CreateProjectModal";
 import { SearchInput } from "../../components/inputs/SearchInput";
 import { PlussButton } from "../../components/buttons/PlussButton";
 import Row from "react-bootstrap/Row";
-import ProjectCard from "../../components/Cards/ProjectCard";
-import { mediumScreen } from "../../style/dimensions";
+import ProjectCard from "../../components/cards/ProjectCard";
+import { largeScreen, mediumScreen } from "../../style/dimensions";
 import { Flex } from "../../components/wrappers/Flex";
 import { StatusFilter } from "../../components/inputs/StatusFilter";
 
@@ -41,7 +41,7 @@ export default ( props ) => {
   }, [] );
 
   return (
-      <Container style={ { maxWidth: mediumScreen, paddingTop: 40 } }>
+      <Container className={'px-5'} style={ { maxWidth: largeScreen, paddingTop: 40 } }>
         <h1 className={ 'm-0' }> Projects </h1>
 
         <Flex style={{border: '1px solid'}} flexDirection={ 'row' } justifyContent={ 'space-between' } alignItems={ 'center' }>
@@ -53,7 +53,7 @@ export default ( props ) => {
           <PlussButton onClick={ () => setShowModal( true ) }/>
         </Flex>
 
-        <Row>
+        <Flex flexWrap={'wrap'} justifyContent={'center'}>
           {
             filteredProjects.map( p => {
               return (
@@ -61,7 +61,7 @@ export default ( props ) => {
               );
             } )
           }
-        </Row>
+        </Flex>
 
         <CreateProjectModal show={ showModal } onHide={ () => {
           setShowModal( false );

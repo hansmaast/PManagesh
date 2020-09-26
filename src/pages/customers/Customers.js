@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { addCostumerToDb, getCostumers } from "../../db/actions";
 import { containsDuplicate } from "../../utils/containsDuplicate";
 import LayoutStyle from "../../components/LayoutStyle";
-import CustomerCard from "../../components/Cards/CustomerCard";
+import CustomerCard from "../../components/cards/CustomerCard";
 
 export default () => {
   const [costumers, setCostumers] = useState([]);
