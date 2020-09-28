@@ -4,8 +4,10 @@ import { addEmployeeToDb } from "../../db/actions";
 import { employeeModel } from "../../db/models";
 import { containsDuplicate } from "../../utils/containsDuplicate";
 import { AlertWithLink } from "../alerts/AlertWithLink";
+import { useEmployeeStore } from "../../store/employeeStore";
 
-export const CreateEmployeeModal = ( { currentEmployees, ...props } ) => {
+export const CreateEmployeeModal = ( { ...props } ) => {
+  const currentEmployees = useEmployeeStore( state => state.employees )
   const [ employee, setEmployee ] = useState( { ...employeeModel } );
   const [ alertData, setAlertData ] = useState( { show: false, textInLink: '', id: null } )
   const [ employeeId, setEmployeeId ] = useState( null );

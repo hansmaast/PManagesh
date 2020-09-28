@@ -1,11 +1,10 @@
 import React from "react";
 
-export const useSearchArray = (fromKey, searchTerm, arrayToFilter, assignTo) => {
+export const useSearchArray = (arrayToFilter, fromKey, searchTerm, assignTo) => {
   React.useEffect( () => {
     const results = arrayToFilter.filter( p =>
         p[fromKey].toLowerCase().includes( searchTerm.toLowerCase() )
     );
     assignTo( results );
-    console.log( searchTerm );
   }, [ searchTerm ] );
 }

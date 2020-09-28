@@ -6,15 +6,15 @@ import { ScaleOnHover } from "../effects/ScaleOnHover";
 
 const EmployeeCard = ( { employee, refProp } ) => {
 
-  let { path, url } = useRouteMatch();
+  let { url } = useRouteMatch();
 
   const { id, firstName, lastName, position } = employee;
 
   return (
-      <Link className={'mx-1'} to={ `${ url }/${ id }` } ref={ refProp }>
+      <Link style={{marginRight: 15}} to={ `${ url }/${ id }` } ref={ refProp }>
         <ScaleOnHover scaleTo={1.02}>
           <Card style={ { width: '18rem' } }>
-            <Card.Img variant="top" src="holder.js/100px180"/>
+            <Card.Img variant="top" src="holder.js/100px180" />
             <Card.Body>
               <Card.Title>{ firstName } { lastName } </Card.Title>
               <Card.Text>

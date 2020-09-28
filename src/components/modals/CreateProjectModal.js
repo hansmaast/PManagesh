@@ -1,18 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Modal } from "react-bootstrap";
-import { addProjectToDb, getCostumers, getEmployees } from "../../db/actions";
+import { addProjectToDb } from "../../db/actions";
 import { projectModel } from "../../db/models";
 import { AlertWithLink } from "../alerts/AlertWithLink";
+import { useCustomerStore} from "../../store/customerStore";
+import shallow from "zustand/shallow";
+import { useEmployeeStore } from "../../store/employeeStore";
 
 export const CreateProjectModal = props => {
   const [ project, setProject ] = useState( { ...projectModel } );
   const [ alertData, setAlertData ] = useState( { show: false, textInLink: '', id: null } )
-  const [ allCostumers, setAllCostumers ] = useState( [ {} ] );
-  const [ allEmployees, setAllEmployees ] = useState( [ {} ] );
 
-  const handleChange = (e) => {
+  const { customers, fetchCustomers } = useCustomerStore( state => ( {
+    customers: state.customers,
+    fetchCustomers: state.fetchCustomers
+  } ), shallow );
+
+  const { employees, fetchEmployees } = useEmployeeStore( state => ( {
+    employees: state.employees,
+    fetchEmployees: state.fetchEmployees
+  } ), shallow );
+
+  const handleChange = ( e ) => {
     let value = e.target.value;
-
 
     if ( e.target.name.includes( 'Id' ) ) {
       value = parseInt( value );
@@ -22,13 +32,10 @@ export const CreateProjectModal = props => {
       return setProject( { ...project, [e.target.name]: [ ...project.employeeIds, value ] } )
     }
 
-    setProject({ ...project, [e.target.name]: value });
+    setProject( { ...project, [e.target.name]: value } );
   };
 
   const addProject = async () => {
-
-
-
     const { id } = await addProjectToDb( project );
     setAlertData( { show: true, textInLink: project.name, id: id } )
     setProject( { ...projectModel } );
@@ -37,16 +44,9 @@ export const CreateProjectModal = props => {
     }, 2500 );
   }
 
-  const getData = async () => {
-    const costumers = await getCostumers();
-    setAllCostumers( [ ...costumers ] );
-    const employees = await getEmployees();
-
-    setAllEmployees( [ ...employees ] );
-  }
-
   useEffect( () => {
-    getData();
+    fetchCustomers();
+    fetchEmployees();
   }, [] )
 
   return (
@@ -76,7 +76,7 @@ export const CreateProjectModal = props => {
                               name={ 'costumerId' }>
                   <option>Choose...</option>
                   {
-                    allCostumers.map( c => <option key={ c.id } value={ c.id }>{ c.name }</option> )
+                    customers.map( c => <option key={ c.id } value={ c.id }>{ c.name }</option> )
                   }
                 </Form.Control>
               </Form.Group>
@@ -96,8 +96,8 @@ export const CreateProjectModal = props => {
                               name={ 'employeeIds' }>
                   <option>Choose...</option>
                   {
-                    allEmployees.map( e => <option key={ e.id }
-                                                   value={ e.id }>{ `${ e.firstName } ${ e.lastName }` }</option> )
+                    employees.map( e => <option key={ e.id }
+                                                value={ e.id }>{ `${ e.firstName } ${ e.lastName }` }</option> )
                   }
                 </Form.Control>
               </Form.Group>
@@ -127,7 +127,7 @@ export const CreateProjectModal = props => {
         </Modal.Body>
         <Modal.Footer>
           <AlertWithLink
-              show={ true }
+              show={ alertData.show }
               variant={ 'success' }
               text={ 'Success  text' }
               linkText={ alertData.textInLink }

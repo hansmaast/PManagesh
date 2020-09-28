@@ -29,7 +29,7 @@ export const ScrollRowArrows = ( { data } ) => {
           { !data && <h3 className={ 'm-auto' }>Click the + to create a project!</h3> }
           { data && data.length === 0 && <h4 className={ 'm-auto' }>No match found..<Search/></h4> }
           { data &&
-            data.map( p => <EmployeeCard refProp={cardRef} employee={ p }/> )
+            data.map( p => <EmployeeCard key={p.id} refProp={cardRef} employee={ p }/> )
           }
         </div>
         <ArrowButton right size={ 42 } onClick={ () => scrollElementWidth( true, 3, cardRef, rowRef )  }/>

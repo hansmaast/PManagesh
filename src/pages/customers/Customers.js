@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { addCostumerToDb, getCostumers } from "../../db/actions";
+import { addCostumerToDb, getCustomers } from "../../db/actions";
 import { containsDuplicate } from "../../utils/containsDuplicate";
 import LayoutStyle from "../../components/LayoutStyle";
 import CustomerCard from "../../components/cards/CustomerCard";
@@ -10,7 +10,7 @@ export default () => {
   const [costumer, setCostumer] = useState({ name: "" });
 
   const fetchProjects = async () => {
-    const fromDb = await getCostumers();
+    const fromDb = await getCustomers();
     fromDb.sort((a, b) => a.id < b.id);
     console.log(fromDb);
 

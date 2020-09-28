@@ -1,4 +1,4 @@
-import backgroundImage from "../../images/sincerely-media-FPrniQ84dEk-unsplash.jpg";
+import backgroundImage from "../../style/images/sincerely-media-FPrniQ84dEk-unsplash.jpg";
 import React from "react";
 
 export const BackgroundImage = ( { children } ) => {

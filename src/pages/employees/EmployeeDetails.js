@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { getEmployeeById, getProjectById, getProjectsFromEmployee } from "../../db/actions";
 import { employeeModel } from "../../db/models";
 
-export default ({}) => {
+export default () => {
 
   const [employee, setEmployee] = useState({...employeeModel});
   const [projects, setProjects] = useState([]);
@@ -12,7 +12,7 @@ export default ({}) => {
   const intId = parseInt( id );
 
   const getData = async () => {
-    const employee = await getEmployeeById(intId);
+    const employee = await getEmployeeById(id);
     setEmployee( {...employee} );
 
     const projectsFromDb = await getProjectsFromEmployee(employee)

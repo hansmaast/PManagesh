@@ -9,7 +9,7 @@ export const getProjects = async () => {
   return await getAllFrom( projectTable );
 }
 
-export const getCostumers = async () => {
+export const getCustomers = async () => {
   return await getAllFrom( costumerTable );
 }
 

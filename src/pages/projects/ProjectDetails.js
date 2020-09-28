@@ -1,39 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getProjectDetails } from "../../db/actions";
+import shallow from "zustand/shallow";
+import { useProjectStore } from "../../store/projectStore";
 
 export default () => {
-  const [ project, setProject ] = useState( null );
+  const { projectDetails, fetchDetails } = useProjectStore( state => ( {
+    projectDetails: state.projectDetails,
+    fetchDetails: state.fetchDetails
+  } ), shallow );
 
   let { id } = useParams();
-  const intId = parseInt( id );
+  const idAsInt = parseInt( id );
 
 
   useEffect( () => {
-    // const project = getProject(intId);
-    const init = async () => {
-      let data = await getProjectDetails( intId );
-      await setTimeout( () => setProject( data ), 500 );
-    }
-    init().catch( e => console.log(e));
-  }, [ intId ] );
+    fetchDetails(idAsInt)
+  }, [] );
 
-  if ( !project ) {
+  if ( !projectDetails ) {
     return <p>Loading..</p>
   }
 
-  console.log( 'project -> ', project );
+  console.log( 'details -> ', projectDetails );
 
   return (
       <div>
-        <h4>Project: { project.details.name }</h4>
-        <p>Custumer: { project.costumer.name }</p>
+        <h4>Project: { projectDetails.name }</h4>
+        {/*<p>Customer: { projectDetails.customer}</p>*/}
         <p>Employees: </p>
         <ul>
-          { project.employees.map( e => <li key={e.id}>{ `${ e.firstName } ${ e.lastName }` }</li> ) }
+          {/*{ projectDetails.employees.map( e => <li key={ e.id }>{ `${ e.firstName } ${ e.lastName }` }</li> ) }*/}
         </ul>
         <h5>Description:</h5>
-        <p>{ project.details.description }</p>
+        <p>{ projectDetails.description }</p>
       </div>
   );
 }

@@ -1,63 +1,53 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
-import { getProjects } from "../../db/actions";
-import { useSearchArray } from "../../utils/hooks/useSearchArray";
 import { CreateProjectModal } from "../../components/modals/CreateProjectModal";
-import { SearchInput } from "../../components/inputs/SearchInput";
 import { PlussButton } from "../../components/buttons/PlussButton";
-import Row from "react-bootstrap/Row";
 import ProjectCard from "../../components/cards/ProjectCard";
-import { largeScreen, mediumScreen } from "../../style/dimensions";
+import { largeScreen } from "../../style/dimensions";
 import { Flex } from "../../components/wrappers/Flex";
 import { StatusFilter } from "../../components/inputs/StatusFilter";
+import { useStatusFilter } from "../../utils/hooks/useStatusFilter";
+import { useProjectStore } from "../../store/projectStore";
+import { Search } from "react-feather";
 
-export default ( props ) => {
-  const [ projects, setProjects ] = useState( [] );
-  const [ filteredProjects, setFilteredProjects ] = useState( [] );
-  const [ showModal, setShowModal ] = React.useState( false );
-  const [ searchTerm, setSearchTerm ] = useState( '' );
+export default () => {
 
-  const fetchProjects = async () => {
-    const projectsFromDb = await getProjects();
-    setProjects( [ ...projects, ...projectsFromDb ] );
-    setFilteredProjects( [ ...projectsFromDb ] )
-  };
+  const fetchProjects = useProjectStore( state => state.fetchProjects );
+  const projects = useProjectStore( state => state.projects );
+  const filteredProjects = useProjectStore( state => state.filteredProjects );
+  const setFilteredProjects = useProjectStore( state => state.setFilteredProjects );
+  const [ showModal, setShowModal ] = useState( false );
+  const [ statusFilter, setStatusFilter ] = useState( 'all' );
 
-  const handleStatusFilter = ( status ) => {
-    status = status.toLowerCase();
-
-    if ( status === 'all' ) {
-      return setFilteredProjects( [ ...projects ] );
-    }
-
-    const filtered = projects.filter( p => p.status.toLowerCase() === status );
-    setFilteredProjects( [ ...filtered ] );
-  };
-
-  useSearchArray( 'name', searchTerm, projects, setFilteredProjects );
+  useStatusFilter( projects, statusFilter, setFilteredProjects );
 
   useEffect( () => {
     fetchProjects();
-  }, [] );
+  }, [ fetchProjects ] );
 
   return (
-      <Container className={'px-5'} style={ { maxWidth: largeScreen, paddingTop: 40 } }>
-        <h1 className={ 'm-0' }> Projects </h1>
+      <Container className={ 'px-5 py-5' } style={ { maxWidth: largeScreen, paddingTop: 40 } }>
+        <h1 className={ 'm-2' }> Projects </h1>
 
-        <Flex style={{border: '1px solid'}} flexDirection={ 'row' } justifyContent={ 'space-between' } alignItems={ 'center' }>
-          <SearchInput
-              value={ searchTerm }
-              onChange={ e => setSearchTerm( e.target.value ) }
-          />
-          <StatusFilter onChange={ e => handleStatusFilter( e.target.value ) }/>
+        <Flex flexDirection={ 'row' } justifyContent={ 'space-between' }
+              alignItems={ 'center' }>
+
+          <StatusFilter onChange={ e => setStatusFilter( e.target.value ) }/>
           <PlussButton onClick={ () => setShowModal( true ) }/>
         </Flex>
 
-        <Flex flexWrap={'wrap'} justifyContent={'center'}>
+        <Flex flexWrap={ 'wrap' } justifyContent={ 'center' }>
+
+          { !filteredProjects &&
+          <h3 className={ 'm-auto' }>Click the + to create a project!</h3>
+          }
+          { filteredProjects && filteredProjects.length === 0 &&
+          <h4 className={ 'm-auto' }>No match found..<Search/></h4>
+          }
           {
             filteredProjects.map( p => {
               return (
-                  <ProjectCard project={ p }/>
+                  <ProjectCard key={ p.id } project={ p }/>
               );
             } )
           }
