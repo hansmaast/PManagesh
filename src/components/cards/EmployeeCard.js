@@ -1,26 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import { Link, useRouteMatch } from "react-router-dom";
 import { ScaleOnHover } from "../effects/ScaleOnHover";
+import { getDataUrlFromBlob } from "../../utils/getDataUrlFromBlob";
 
 const EmployeeCard = ( { employee, refProp } ) => {
+
+  const [ imgUrl, setImgeUrl ] = useState( null );
 
   let { url } = useRouteMatch();
 
   const { id, firstName, lastName, position } = employee;
+  const setDataUrl = async () => {
+    if ( employee.imageBlob ) {
+      const dataUrlFromBlob = await getDataUrlFromBlob( employee.imageBlob );
+      setImgeUrl( dataUrlFromBlob );
+      console.log( 'image Url: ', imgUrl );
+    }
+
+  }
+  useEffect( () => {
+    setDataUrl();
+  }, [] )
+
 
   return (
-      <Link style={{marginRight: 15}} to={ `${ url }/${ id }` } ref={ refProp }>
-        <ScaleOnHover scaleTo={1.02}>
+      <Link style={ { marginRight: 15 } } to={ `${ url }/${ id }` } ref={ refProp }>
+        <ScaleOnHover scaleTo={ 1.02 }>
           <Card style={ { width: '18rem' } }>
-            <Card.Img variant="top" src="holder.js/100px180" />
+            <Card.Header>
+              <div style={ { display: 'flex', alignItems: 'center', justifyContent: 'space-between' } }>
+                <Card.Title className={ 'm-0' }>{ firstName } { lastName } </Card.Title>
+
+                  <img style={ { objectFit: 'cover', border: '1px solid', borderRadius: 100, overflow: 'hidden' } }
+                       height={50}
+                       width={50}
+                       alt={'employee'}
+                       src={ imgUrl }/>
+              </div>
+            </Card.Header>
             <Card.Body>
-              <Card.Title>{ firstName } { lastName } </Card.Title>
               <Card.Text>
                 { position ? position : 'No position set' }
               </Card.Text>
-              <Button variant="primary">Go somewhere</Button>
+              <Button variant="primary">View employee details</Button>
             </Card.Body>
           </Card>
         </ScaleOnHover>

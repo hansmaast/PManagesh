@@ -4,56 +4,46 @@ import { addCostumerToDb, getCustomers } from "../../db/actions";
 import { containsDuplicate } from "../../utils/containsDuplicate";
 import LayoutStyle from "../../components/LayoutStyle";
 import CustomerCard from "../../components/cards/CustomerCard";
+import { useCustomerStore } from "../../store/customerStore";
+import { CreateCustomerModal } from "../../components/modals/CreateCustomerModal";
+import { CreateProjectModal } from "../../components/modals/CreateProjectModal";
+import { PlusButton } from "../../components/buttons/PlusButton";
+import { StatusFilter } from "../../components/inputs/StatusFilter";
+import { Flex } from "../../components/wrappers/Flex";
+import MainWrapper from "../../components/wrappers/MainWrapper";
 
 export default () => {
-  const [costumers, setCostumers] = useState([]);
-  const [costumer, setCostumer] = useState({ name: "" });
-
-  const fetchProjects = async () => {
-    const fromDb = await getCustomers();
-    fromDb.sort((a, b) => a.id < b.id);
-    console.log(fromDb);
-
-    setCostumers([...fromDb]);
-  };
-
-  function handleSubmit() {
-    return async (e) => {
-      e.preventDefault();
-      if (containsDuplicate(costumers, "name", costumer.name)) {
-        return alert("Costumer exists!");
-      }
-      await addCostumerToDb(costumer);
-      setCostumers([costumer, ...costumers]);
-      setCostumer({ name: "" });
-    };
-  }
+  const customers = useCustomerStore(state => state.customers);
+  const fetchCustomers = useCustomerStore(state => state.fetchCustomers);
+  const [ showModal, setShowModal ] = useState( false );
 
   useEffect(() => {
-    fetchProjects();
+    fetchCustomers();
+    console.log('customers: ', customers)
   }, []);
 
   return (
-    <div>
-      <h4>Costumers:</h4>
+    <MainWrapper>
+      <h1>Costumers</h1>
+      <Flex flexDirection={ 'row' } justifyContent={ 'space-between' }
+            alignItems={ 'center' }>
+
+        <PlusButton onClick={ () => setShowModal( true ) }/>
+      </Flex>
       <LayoutStyle>
-        {costumers.map((customer) => {
-          return <CustomerCard customer={customer} />;
+        {customers.map((customer, index) => {
+          return <CustomerCard index={index} customer={customer} />;
         })}
       </LayoutStyle>
-      <form onSubmit={handleSubmit()}>
-        <h3>Add new costumer</h3>
-        <label htmlFor={"costumerName"}>
-          {" "}
-          Customer name:
-          <input
-            value={costumer.name}
-            required
-            onChange={(e) => setCostumer({ ...costumer, name: e.target.value })}
-          />
-        </label>
-        <input type={"submit"} value={"Add new costumer"} />
-      </form>
-    </div>
+
+      <CreateCustomerModal show={ showModal } onHide={ () => {
+        setShowModal( false );
+        fetchCustomers();
+      } }/>
+
+
+    </MainWrapper>
+
+
   );
 };

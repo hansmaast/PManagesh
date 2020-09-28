@@ -7,4 +7,4 @@ export const useSearchArray = (arrayToFilter, fromKey, searchTerm, assign) => {
     );
     assign( results );
   }, [ searchTerm ] );
-}q
+}

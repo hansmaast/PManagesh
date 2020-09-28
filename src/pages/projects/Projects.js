@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import { CreateProjectModal } from "../../components/modals/CreateProjectModal";
-import { PlussButton } from "../../components/buttons/PlussButton";
+import { PlusButton } from "../../components/buttons/PlusButton";
 import ProjectCard from "../../components/cards/ProjectCard";
 import { largeScreen } from "../../style/dimensions";
 import { Flex } from "../../components/wrappers/Flex";
@@ -9,6 +9,8 @@ import { StatusFilter } from "../../components/inputs/StatusFilter";
 import { useStatusFilter } from "../../utils/hooks/useStatusFilter";
 import { useProjectStore } from "../../store/projectStore";
 import { Search } from "react-feather";
+import ProjectDetailsModal from "../../components/modals/ProjectDetailsModal";
+import MainWrapper from "../../components/wrappers/MainWrapper";
 
 export default () => {
 
@@ -16,7 +18,10 @@ export default () => {
   const projects = useProjectStore( state => state.projects );
   const filteredProjects = useProjectStore( state => state.filteredProjects );
   const setFilteredProjects = useProjectStore( state => state.setFilteredProjects );
+  const projectDetailId = useProjectStore(state => state.projectDetailId);
+  const setProjectDetailId = useProjectStore(state => state.setProjectDetailId)
   const [ showModal, setShowModal ] = useState( false );
+  const [showDetails, setShowDetails] = useState(false);
   const [ statusFilter, setStatusFilter ] = useState( 'all' );
 
   useStatusFilter( projects, statusFilter, setFilteredProjects );
@@ -25,15 +30,20 @@ export default () => {
     fetchProjects();
   }, [ fetchProjects ] );
 
-  return (
-      <Container className={ 'px-5 py-5' } style={ { maxWidth: largeScreen, paddingTop: 40 } }>
-        <h1 className={ 'm-2' }> Projects </h1>
+  function handleDetailClick( id ) {
+    setProjectDetailId(id);
+    setShowDetails(true);
+  }
 
+  return (
+      <MainWrapper>
+
+        <h1> Projects </h1>
         <Flex flexDirection={ 'row' } justifyContent={ 'space-between' }
               alignItems={ 'center' }>
 
-          <StatusFilter onChange={ e => setStatusFilter( e.target.value ) }/>
-          <PlussButton onClick={ () => setShowModal( true ) }/>
+          <StatusFilter  className={'m-2'} onChange={ e => setStatusFilter( e.target.value ) }/>
+          <PlusButton onClick={ () => setShowModal( true ) }/>
         </Flex>
 
         <Flex flexWrap={ 'wrap' } justifyContent={ 'center' }>
@@ -47,16 +57,19 @@ export default () => {
           {
             filteredProjects.map( p => {
               return (
+                  <div onClick={() => handleDetailClick( p.id )}>
                   <ProjectCard key={ p.id } project={ p }/>
+                  </div>
               );
             } )
           }
         </Flex>
 
+        <ProjectDetailsModal projectId={projectDetailId} show={showDetails} onHide={() => setShowDetails(false)} />
         <CreateProjectModal show={ showModal } onHide={ () => {
           setShowModal( false );
           fetchProjects();
         } }/>
-      </Container>
+      </MainWrapper>
   );
 };

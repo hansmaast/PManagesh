@@ -5,6 +5,7 @@ export const useProjectStore = create( set => ( {
   projects: [],
   filteredProjects: [],
   projectDetails: {},
+  projectDetailId: null,
   setFilteredProjects: projects => {
     set( { filteredProjects: [ ...projects ] } )
   },
@@ -17,6 +18,9 @@ export const useProjectStore = create( set => ( {
   },
   fetchDetails: async ( id ) => {
     let data = await getProjectDetails( id );
-    set( { projectDetails: data } );
+    set( { projectDetails: {...data} } );
+  },
+  setProjectDetailId: id => {
+    set( {projectDetailId: id})
   }
 } ) )

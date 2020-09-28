@@ -1,4 +1,4 @@
-import backgroundImage from "../../style/images/sincerely-media-FPrniQ84dEk-unsplash.jpg";
+import backgroundImage from "../../style/images/Pattern-Randomized.svg";
 import React from "react";
 
 export const BackgroundImage = ( { children } ) => {

@@ -5,7 +5,7 @@ import React from "react";
 import { ScaleOnHover } from "../effects/ScaleOnHover";
 import { plusButton } from "../../style/buttons";
 
-export const PlussButton = ( { onClick, ...props } ) => {
+export const PlusButton = ( { onClick } ) => {
   return (
       <Button className={ 'p-0 ml-auto my-auto' } onClick={ onClick } style={ plusButton }>
         <ScaleOnHover scaleTo={ 1.1 } ms={ 200 }>
@@ -15,4 +15,4 @@ export const PlussButton = ( { onClick, ...props } ) => {
   );
 }
 
-PlussButton.propTypes = { onClick: PropTypes.func };
+PlusButton.propTypes = { onClick: PropTypes.func };

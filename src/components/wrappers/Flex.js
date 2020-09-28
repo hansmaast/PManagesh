@@ -1,19 +1,20 @@
 import React from "react";
 
 
-export const Flex = ({
-    zIndex,
-    position,
-  backgroundColor,
-  flexOrder,
-  flexWrap,
-  flexFlow,
-  flexDirection,
-  alignItems,
-  justifyContent,
-    wrap,
-  children
-}) => {
+export const Flex = ( {
+                        zIndex,
+                        position,
+                        backgroundColor,
+                        flexOrder,
+                        flexWrap,
+                        flexFlow,
+                        flexDirection,
+                        alignItems,
+                        justifyContent,
+                        wrap,
+                        overflowY,
+                        children
+                      } ) => {
 
   const style = {
     width: '100%',
@@ -27,7 +28,8 @@ export const Flex = ({
     flexOrder: flexOrder,
     backgroundColor: backgroundColor,
     position: position,
-    zIndex: zIndex
+    zIndex: zIndex,
+    overflowY: overflowY
   };
 
   return (

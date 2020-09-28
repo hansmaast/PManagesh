@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 export const SearchInput = ( { value, onChange, ...props } ) => {
   return (
-      <div style={{width: '100%', maxWidth: 170, display: 'flex', alignItems: 'center'}} {...props}>
+      <div style={{width: '100%', maxWidth: 200, display: 'flex', alignItems: 'center'}} {...props}>
         <FormControl value={ value } onChange={ e => onChange( e ) } type="text" placeholder="Search"
                      className="mr-2"/>
         <Search size={'2rem'}/>

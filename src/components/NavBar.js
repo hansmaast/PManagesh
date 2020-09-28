@@ -36,7 +36,7 @@ export default () => {
             justifyContent={ 'center' }
             backgroundColor={ navBarColor }
       >
-        <Navbar className={ ' px-2' }
+        <Navbar className={ ' px-4' }
                 style={ navStyle }
                 collapseOnSelect
                 expand="lg" bg={ navBarColor }
@@ -49,7 +49,7 @@ export default () => {
             <Nav className="mr-auto">
               <Nav.Link href="/projects">Projects</Nav.Link>
               <Nav.Link href="/employees">Employees</Nav.Link>
-              <Nav.Link href="/costumers">Costumers</Nav.Link>
+              <Nav.Link href="/customers">Customers</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>

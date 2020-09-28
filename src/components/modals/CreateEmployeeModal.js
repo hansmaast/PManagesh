@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Alert, Button, Col, Form, Modal } from "react-bootstrap";
 import { addEmployeeToDb } from "../../db/actions";
 import { employeeModel } from "../../db/models";
 import { containsDuplicate } from "../../utils/containsDuplicate";
 import { AlertWithLink } from "../alerts/AlertWithLink";
 import { useEmployeeStore } from "../../store/employeeStore";
+import * as blobUtil from "blob-util";
 
 export const CreateEmployeeModal = ( { ...props } ) => {
   const currentEmployees = useEmployeeStore( state => state.employees )
@@ -13,6 +14,8 @@ export const CreateEmployeeModal = ( { ...props } ) => {
   const [ employeeId, setEmployeeId ] = useState( null );
   const [ showSuccess, setShowSuccess ] = useState( false );
   const [ emailExists, setEmailExists ] = useState( false );
+  const [ blob, setBlob ] = useState( new Blob() );
+  const [ dataUrl, setDataUrl ] = useState( null );
 
   const handleEmployeeChange = e => {
     let value = e.target.value;
@@ -51,6 +54,31 @@ export const CreateEmployeeModal = ( { ...props } ) => {
     }
   }
 
+  function encodeImageFileAsBlob( element ) {
+    console.log('el: ', typeof element);
+    const file = element.files[0];
+    const reader = new FileReader();
+    reader.onloadend = function () {
+      const result = reader.result;
+      console.log( 'result: ', result );
+      const blob = blobUtil.arrayBufferToBlob( result, 'image' );
+      setEmployee({...employee, imageBlob: blob});
+      console.log( 'imageBlob: ', employee.imageBlob );
+    }
+    reader.readAsDataURL( file );
+  }
+
+  const getDataUrlFromBlob = async ( blob ) => {
+    let dataURL = await blobUtil.blobToBinaryString( blob );
+    setDataUrl( dataURL );
+    console.log( 'dataUrl: ', dataURL )
+    return dataURL;
+  }
+
+  getDataUrlFromBlob( employee.imageBlob );
+
+  const fileRef = useRef( null );
+
   return (
       <Modal
           { ...props }
@@ -80,7 +108,6 @@ export const CreateEmployeeModal = ( { ...props } ) => {
                     required
                 />
               </Form.Group>
-
               <Form.Group as={ Col } controlId="lastName">
                 <Form.Label>Last name:</Form.Label>
                 <Form.Control
@@ -129,7 +156,7 @@ export const CreateEmployeeModal = ( { ...props } ) => {
                 />
               </Form.Group>
 
-              <Form.Group controlId="age">
+              <Form.Group controlId="position">
                 <Form.Label>Position</Form.Label>
                 <Form.Control as={ 'select' }
                               onChange={ e => handleEmployeeChange( e ) }
@@ -139,13 +166,19 @@ export const CreateEmployeeModal = ( { ...props } ) => {
                               defaultValue={ 'Choose position..' }
                               required
                 >
-                  <option value={""}>Choose..</option>
+                  <option value={ "" }>Choose..</option>
                   <option value={ 'Developer' }>Developer</option>
                   <option value={ 'Musketeer' }>Musketeer</option>
                   <option value={ 'Designer' }>Designer</option>
                 </Form.Control>
               </Form.Group>
 
+              <Form.Group>
+                <Form.Label>Upload image</Form.Label>
+                <Form.Control ref={ fileRef } accept=".jpeg, .png, .jpg, .svg" type="file"
+                              onChange={ () => encodeImageFileAsBlob( fileRef.current ) }/>
+                <img width={ 100 } height={ 100 } src={ dataUrl }/>
+              </Form.Group>
             </Form.Row>
             <Button type={ 'submit' }>Add employee</Button>
           </Form>
@@ -158,14 +191,14 @@ export const CreateEmployeeModal = ( { ...props } ) => {
               variant={ 'success' }
               show={ showSuccess }
           />
-          {/*{*/}
-          {/*  showSuccess &&*/}
-          {/*  <Alert variant={ 'success' }>*/}
-          {/*    Added new employee{ ' ' }*/}
-          {/*    <Alert.Link*/}
-          {/*        href={ `/employees/${ employeeId }` }>{ `${ employee.firstName } ${ employee.lastName }` }</Alert.Link>!*/}
-          {/*  </Alert>*/}
-          {/*}*/}
+          {/*{*/ }
+          {/*  showSuccess &&*/ }
+          {/*  <Alert variant={ 'success' }>*/ }
+          {/*    Added new employee{ ' ' }*/ }
+          {/*    <Alert.Link*/ }
+          {/*        href={ `/employees/${ employeeId }` }>{ `${ employee.firstName } ${ employee.lastName }` }</Alert.Link>!*/ }
+          {/*  </Alert>*/ }
+          {/*}*/ }
           <Button variant={ 'secondary' } onClick={ props.onHide }>Close</Button>
         </Modal.Footer>
       </Modal>
