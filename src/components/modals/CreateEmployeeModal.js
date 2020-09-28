@@ -54,16 +54,14 @@ export const CreateEmployeeModal = ( { ...props } ) => {
     }
   }
 
-  function encodeImageFileAsBlob( element ) {
-    console.log('el: ', typeof element);
+  async function encodeImageFileAsBlob( element ) {
     const file = element.files[0];
+    console.log('file: ', file);
     const reader = new FileReader();
     reader.onloadend = function () {
       const result = reader.result;
-      console.log( 'result: ', result );
-      const blob = blobUtil.arrayBufferToBlob( result, 'image' );
+      const blob = blobUtil.arrayBufferToBlob( result, file.type,  );
       setEmployee({...employee, imageBlob: blob});
-      console.log( 'imageBlob: ', employee.imageBlob );
     }
     reader.readAsDataURL( file );
   }
@@ -173,11 +171,18 @@ export const CreateEmployeeModal = ( { ...props } ) => {
                 </Form.Control>
               </Form.Group>
 
-              <Form.Group>
+              <Form.Group style={{display: 'flex'}}>
+                <div >
                 <Form.Label>Upload image</Form.Label>
-                <Form.Control ref={ fileRef } accept=".jpeg, .png, .jpg, .svg" type="file"
-                              onChange={ () => encodeImageFileAsBlob( fileRef.current ) }/>
-                <img width={ 100 } height={ 100 } src={ dataUrl }/>
+                <Form.Control
+                    ref={ fileRef }
+                    accept=".jpeg, .png, .jpg, .svg"
+                    type="file"
+                    onChange={ () => encodeImageFileAsBlob( fileRef.current ) }
+                />
+                </div>
+                <img style={ { objectFit: 'cover', border: '1px solid', borderRadius: 100, overflow: 'hidden' } }
+                     width={ 100 } height={ 100 } src={ dataUrl }/>
               </Form.Group>
             </Form.Row>
             <Button type={ 'submit' }>Add employee</Button>

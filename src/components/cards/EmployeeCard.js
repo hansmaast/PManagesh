@@ -7,16 +7,24 @@ import * as blobUtil from "blob-util";
 
 const EmployeeCard = ( { employee, refProp } ) => {
 
-  const [ imgUrl, setImgeUrl ] = useState( null );
+  const [ imgUrl, setImgUrl ] = useState( null );
 
   let { url } = useRouteMatch();
 
   const { id, firstName, lastName, position, imageBlob } = employee;
 
+
   const setDataUrl = async () => {
     if ( imageBlob ) {
-      const dataUrlFromBlob = await blobUtil.blobToDataURL( imageBlob );
-      setImgeUrl( dataUrlFromBlob );
+      let dataUrlFromBlob;
+      if ( imageBlob.type.includes( 'svg' ) || imageBlob.type.includes('jpeg') || imageBlob.type.includes('jpg') ) {
+        console.log( 'blob type: ', imageBlob.type )
+        dataUrlFromBlob = await blobUtil.blobToBinaryString( imageBlob );
+
+      } else {
+      dataUrlFromBlob = await blobUtil.blobToDataURL( imageBlob );
+      }
+      setImgUrl( dataUrlFromBlob );
     }
   }
 
@@ -33,11 +41,11 @@ const EmployeeCard = ( { employee, refProp } ) => {
               <div style={ { display: 'flex', alignItems: 'center', justifyContent: 'space-between' } }>
                 <Card.Title className={ 'm-0' }>{ firstName } { lastName } </Card.Title>
 
-                  <img style={ { objectFit: 'cover', border: '1px solid', borderRadius: 100, overflow: 'hidden' } }
-                       height={50}
-                       width={50}
-                       alt={'employee'}
-                       src={ imgUrl }/>
+                <img style={ { objectFit: 'cover', border: '1px solid', borderRadius: 100, overflow: 'hidden' } }
+                     height={ 50 }
+                     width={ 50 }
+                     alt={ 'employee' }
+                     src={ imgUrl }/>
               </div>
             </Card.Header>
             <Card.Body>
