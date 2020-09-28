@@ -3,7 +3,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import { Link, useRouteMatch } from "react-router-dom";
 import { ScaleOnHover } from "../effects/ScaleOnHover";
-import { getDataUrlFromBlob } from "../../utils/getDataUrlFromBlob";
+import * as blobUtil from "blob-util";
 
 const EmployeeCard = ( { employee, refProp } ) => {
 
@@ -11,15 +11,15 @@ const EmployeeCard = ( { employee, refProp } ) => {
 
   let { url } = useRouteMatch();
 
-  const { id, firstName, lastName, position } = employee;
-  const setDataUrl = async () => {
-    if ( employee.imageBlob ) {
-      const dataUrlFromBlob = await getDataUrlFromBlob( employee.imageBlob );
-      setImgeUrl( dataUrlFromBlob );
-      console.log( 'image Url: ', imgUrl );
-    }
+  const { id, firstName, lastName, position, imageBlob } = employee;
 
+  const setDataUrl = async () => {
+    if ( imageBlob ) {
+      const dataUrlFromBlob = await blobUtil.blobToDataURL( imageBlob );
+      setImgeUrl( dataUrlFromBlob );
+    }
   }
+
   useEffect( () => {
     setDataUrl();
   }, [] )

@@ -13,6 +13,8 @@ async function initDataToTable( dataSet, table ) {
 
       data.imageBlob = await blobUtil.imgSrcToBlob( initAvatars[index], 'image/svg' );
 
+      console.log('imge blob: ', data.imageBlob);
+
     }
     const { idWithPrefix } = await generateIdFor( table );
     await table.setItem( idWithPrefix, data );
