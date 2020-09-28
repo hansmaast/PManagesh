@@ -12,9 +12,9 @@ import { useEmployeeStore } from "../store/employeeStore";
 
 export default () => {
 
-  let { pathname } = useLocation();
-
   const [ searchTerm, setSearchTerm ] = useState( '' );
+
+  let { pathname } = useLocation();
 
   if ( pathname.includes( '/projects' ) ) {
     const projects = useProjectStore( state => state.projects );
