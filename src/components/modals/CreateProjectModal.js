@@ -2,24 +2,19 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Modal } from "react-bootstrap";
 import { addProjectToDb } from "../../db/actions";
 import { projectModel } from "../../db/models";
-import { AlertWithLink } from "../alerts/AlertWithLink";
-import { useCustomerStore} from "../../store/customerStore";
-import shallow from "zustand/shallow";
+import { useCustomerStore } from "../../store/customerStore";
 import { useEmployeeStore } from "../../store/employeeStore";
+import Alert from "react-bootstrap/Alert";
 
 export const CreateProjectModal = props => {
   const [ project, setProject ] = useState( { ...projectModel } );
-  const [ alertData, setAlertData ] = useState( { show: false, textInLink: '', id: null } )
+  const [ alertData, setAlertData ] = useState( { show: false, text: '', id: null } )
 
-  const { customers, fetchCustomers } = useCustomerStore( state => ( {
-    customers: state.customers,
-    fetchCustomers: state.fetchCustomers
-  } ), shallow );
+  const customers = useCustomerStore( state => state.customers );
+  const fetchCustomers = useCustomerStore( state => state.fetchCustomers );
 
-  const { employees, fetchEmployees } = useEmployeeStore( state => ( {
-    employees: state.employees,
-    fetchEmployees: state.fetchEmployees
-  } ), shallow );
+  const employees = useEmployeeStore( state => state.employees );
+  const fetchEmployees = useEmployeeStore( state => state.fetchEmployees );
 
   const handleChange = ( e ) => {
     let value = e.target.value;
@@ -37,43 +32,62 @@ export const CreateProjectModal = props => {
 
   const addProject = async () => {
     const { id } = await addProjectToDb( project );
-    setAlertData( { show: true, textInLink: project.name, id: id } )
+    setAlertData( {
+      show: true,
+      text: `Yey! ${ project.name } saved..💾`,
+      id: id
+    } );
     setProject( { ...projectModel } );
     setTimeout( () => {
       setAlertData( { show: false, ...alertData } )
     }, 2500 );
   }
 
+  const handleSubmit = e => {
+    e.preventDefault();
+    addProject();
+  }
+
   useEffect( () => {
     fetchCustomers();
     fetchEmployees();
-  }, [] )
+  }, [ fetchCustomers, fetchEmployees ] )
 
   return (
-      <Modal
-          { ...props }
-          size="md"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
+      <Modal size="md"
+             aria-labelledby="contained-modal-title-vcenter"
+             centered
+             { ...props }
       >
-        <Modal.Header closeButton>
+        <Modal.Header closeButton className={ 'px-4' }>
           <Modal.Title id="contained-modal-title-vcenter">
             Create a project
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <Form>
+
+        <Modal.Body className={ 'px-4' }>
+          <Form onSubmit={ ( e ) => handleSubmit( e ) }>
             <Form.Row>
               <Form.Group as={ Col } controlId="formGridEmail">
                 <Form.Label>Name</Form.Label>
-                <Form.Control onChange={ e => handleChange( e ) } name={ 'name' } value={ project.name } type="text"
-                              placeholder="Project name" required/>
+                <Form.Control
+                    onChange={ e => handleChange( e ) }
+                    name={ 'name' }
+                    value={ project.name }
+                    type="text"
+                    placeholder="Project name"
+                    required
+                />
               </Form.Group>
 
               <Form.Group as={ Col } controlId="formGridPassword">
                 <Form.Label>Costumer</Form.Label>
-                <Form.Control as="select" defaultValue="Choose costumer..." onChange={ e => handleChange( e ) }
-                              name={ 'costumerId' }>
+                <Form.Control
+                    onChange={ e => handleChange( e ) }
+                    as="select"
+                    defaultValue="Choose costumer..."
+                    name={ 'costumerId' }
+                >
                   <option>Choose...</option>
                   {
                     customers.map( c => <option key={ c.id } value={ c.id }>{ c.name }</option> )
@@ -84,20 +98,34 @@ export const CreateProjectModal = props => {
 
             <Form.Group controlId="formGridDescription">
               <Form.Label>Description</Form.Label>
-              <Form.Control onChange={ e => handleChange( e ) } value={ project.description } name={ 'description' }
-                            as="textarea" rows="3"/>
+              <Form.Control
+                  onChange={ e => handleChange( e ) }
+                  value={ project.description }
+                  name={ 'description' }
+                  as="textarea"
+                  rows="3"
+              />
             </Form.Group>
 
             <Form.Row>
-
               <Form.Group as={ Col } controlId="formGridState">
                 <Form.Label>Employee</Form.Label>
-                <Form.Control as="select" defaultValue="Choose..." onChange={ e => handleChange( e ) }
-                              name={ 'employeeIds' }>
+                <Form.Control
+                    onChange={ e => handleChange( e ) }
+                    as="select"
+                    defaultValue="Choose..."
+                    name={ 'employeeIds' }
+                >
                   <option>Choose...</option>
                   {
-                    employees.map( e => <option key={ e.id }
-                                                value={ e.id }>{ `${ e.firstName } ${ e.lastName }` }</option> )
+                    employees.map( e => (
+                        <option
+                            key={ e.id }
+                            value={ e.id }
+                        >
+                          { `${ e.firstName } ${ e.lastName }` }
+                        </option>
+                    ) )
                   }
                 </Form.Control>
               </Form.Group>
@@ -107,12 +135,10 @@ export const CreateProjectModal = props => {
                 { [ 'Not started', 'In progress', 'Done' ].map( status => {
                   return (
                       <Form.Check
+                          onChange={ e => handleChange( e ) }
                           key={ status }
                           id={ `${ status }-radio` }
                           name={ 'status' }
-                          onChange={ e => {
-                            handleChange( e )
-                          } }
                           value={ status }
                           type="radio"
                           label={ status }
@@ -120,21 +146,20 @@ export const CreateProjectModal = props => {
                   )
                 } ) }
               </Form.Group>
-
             </Form.Row>
 
+            <Button type={ 'submit ' }>Add project</Button>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <AlertWithLink
+
+        <Modal.Footer className={ 'px-4' }>
+          <Alert
+              className={ 'mr-auto py-1 px-2' }
               show={ alertData.show }
-              variant={ 'success' }
-              text={ 'Success  text' }
-              linkText={ alertData.textInLink }
-              linkTo={ `/projects/${ alertData.id }` }
-          />
+              variant={ 'success' }>
+            { alertData.text }
+          </Alert>
           <Button variant={ 'secondary' } onClick={ props.onHide }>Close</Button>
-          <Button onClick={ () => addProject() }>Add project</Button>
         </Modal.Footer>
       </Modal>
   );
