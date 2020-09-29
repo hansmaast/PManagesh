@@ -196,14 +196,6 @@ export const CreateEmployeeModal = ( { ...props } ) => {
               variant={ 'success' }
               show={ showSuccess }
           />
-          {/*{*/ }
-          {/*  showSuccess &&*/ }
-          {/*  <Alert variant={ 'success' }>*/ }
-          {/*    Added new employee{ ' ' }*/ }
-          {/*    <Alert.Link*/ }
-          {/*        href={ `/employees/${ employeeId }` }>{ `${ employee.firstName } ${ employee.lastName }` }</Alert.Link>!*/ }
-          {/*  </Alert>*/ }
-          {/*}*/ }
           <Button variant={ 'secondary' } onClick={ props.onHide }>Close</Button>
         </Modal.Footer>
       </Modal>

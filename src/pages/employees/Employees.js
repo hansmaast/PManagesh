@@ -15,7 +15,7 @@ export default () => {
   const fetchEmployees = useEmployeeStore( state => state.fetchEmployees );
   const filteredEmployees = useEmployeeStore( state => state.filteredEmployees );
 
-  const [ showModal, setShowModal ] = React.useState( true );
+  const [ showModal, setShowModal ] = React.useState( false );
   let { path } = useRouteMatch();
 
   useEffect( () => {
@@ -28,7 +28,7 @@ export default () => {
         <div>
           <h1> Employees </h1>
           <Row className={ 'px-3' }>
-            <PlusButton onClick={ () => setShowModal( true ) }/>
+            <PlusButton onClick={ () => setShowModal( showModal ) }/>
           </Row>
           <ScrollRowArrows data={ filteredEmployees }/>
           <CreateEmployeeModal
