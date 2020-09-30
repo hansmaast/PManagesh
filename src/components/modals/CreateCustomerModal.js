@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Button, Col, Form, Modal } from "react-bootstrap";
-import { addCostumerToDb, addEmployeeToDb } from "../../db/actions";
-import { customerModel, employeeModel } from "../../db/models";
+import { addCostumerToDb } from "../../db/actions";
+import { customerModel } from "../../db/models";
 import { containsDuplicate } from "../../utils/containsDuplicate";
-import { AlertWithLink } from "../alerts/AlertWithLink";
-import { useEmployeeStore } from "../../store/employeeStore";
 import { useCustomerStore } from "../../store/customerStore";
+import { useProjectStore } from "../../store/projectStore";
 
 export const CreateCustomerModal = ( { ...props } ) => {
 
   const currentCustomers = useCustomerStore( state => state.customers);
+  const currentProjects = useProjectStore( state => state.projects);
+  const fetchCurrentProjects = useProjectStore( state => state.fetchProjects)
   const [customer, setCustomer] = useState({...customerModel})
   const [ emailExists, setEmailExists ] = useState( false );
   const [ showSuccess, setShowSuccess ] = useState( false );
@@ -22,18 +23,20 @@ export const CreateCustomerModal = ( { ...props } ) => {
 
     const { id } = await addCostumerToDb(customer);
     if ( id ) {
-      console.log( 'added customer: ', customer );
       setCustomer( { ...customerModel } );
       setShowSuccess( true )
       setEmailExists( false );
       setTimeout( () => {
         setShowSuccess( false )
-      }, 3000 );
-
+      }, 2500 );
     } else {
       console.log( 'could not add customer...' )
     }
   }
+
+  useEffect(() => {
+    fetchCurrentProjects();
+  }, [])
 
   return (
       <Modal
@@ -66,7 +69,7 @@ export const CreateCustomerModal = ( { ...props } ) => {
                 />
               </Form.Group>
             </Form.Row>
-
+            <Form.Row>
             <Form.Group controlId="email">
               <Form.Label>Email</Form.Label>
               <Form.Control
@@ -87,12 +90,29 @@ export const CreateCustomerModal = ( { ...props } ) => {
               }
             </Form.Group>
 
-            <Form.Row>
-
-
-
-
+            <Form.Group as={ Col } controlId="formGridState">
+              <Form.Label>Project</Form.Label>
+              <Form.Control
+                  onChange={ e => setCustomer( {...customer, projectIds: e.target.value} ) }
+                  as="select"
+                  defaultValue="Choose..."
+                  name={ 'projectIds' }
+              >
+                <option>Choose...</option>
+                {
+                  currentProjects.map( e => (
+                      <option
+                          key={ e.id }
+                          value={ e.id }
+                      >
+                        { e.name }
+                      </option>
+                  ) )
+                }
+              </Form.Control>
+            </Form.Group>
             </Form.Row>
+
             <Button type={ 'submit' }>Add customer</Button>
           </Form>
         </Modal.Body>

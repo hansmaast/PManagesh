@@ -1,30 +1,59 @@
-import React, { useState } from "react";
-import { Container } from "react-bootstrap";
-import ProjectsRow from "../projects/Projects";
-import EmployeesRow from "../employees/Employees";
-import { getProjects } from "../../db/actions";
-import { Flex } from "../../components/wrappers/Flex";
+import React from "react";
 import Employees from "../employees/Employees";
+import Jumbotron from "react-bootstrap/Jumbotron";
+import Button from "react-bootstrap/Button";
+import { Link } from "react-router-dom";
+import { ScaleOnHover } from "../../components/effects/ScaleOnHover";
+import MainWrapper from "../../components/wrappers/MainWrapper";
 
+
+const Scaleotron = ( { linkTo, title, text, buttonText } ) => {
+
+  return (
+      <ScaleOnHover ms={ 100 } scaleTo={ 1.02 }>
+        <Link to={ linkTo } style={ { textDecoration: 'none' } }>
+          <Jumbotron style={ { textDecoration: 'none' } }>
+            <h1>{ title }</h1>
+            <p>
+              { text }
+            </p>
+            <p>
+              <Button variant="primary">{ buttonText }</Button>
+            </p>
+          </Jumbotron>
+        </Link>
+      </ScaleOnHover>
+  );
+}
 
 export default () => {
-  const [ projects, setProjects ] = useState( [] );
-  const [ filteredProjects, setFilteredProjects ] = useState( [] );
 
-  const fetchProjects = async () => {
-    const projectsFromDb = await getProjects();
-    setProjects( [ ...projects, ...projectsFromDb ] );
-    setFilteredProjects( [ ...projectsFromDb ] )
-  };
+
 
   return (
       <>
-        <Container className={ 'mt-5' }>
-          <ProjectsRow/>
-          <Flex justifyContent={"center"} alignItems={'center'}>
-          <Employees/>
-          </Flex>
-        </Container>
+          <MainWrapper>
+            <Scaleotron
+                title={ 'Projects' }
+                text={ 'Check out your current projects, or create a new one.' }
+                linkTo={ '/projects' }
+                buttonText={ 'Go!' }
+            />
+
+            <Scaleotron
+                title={ 'Employees' }
+                text={ 'Do you need to get an overview of your employees?' }
+                linkTo={ '/employees' }
+                buttonText={ 'Go!' }
+            />
+
+            <Scaleotron
+                title={ 'Customers' }
+                text={ 'Weve also got hold of your customers. Check them out here!' }
+                linkTo={ '/customers' }
+                buttonText={ 'Go!' }
+            />
+          </MainWrapper>
       </>
   );
 };

@@ -1,81 +1,96 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Alert, Button, Col, Form, Modal } from "react-bootstrap";
 import { addEmployeeToDb } from "../../db/actions";
 import { employeeModel } from "../../db/models";
 import { containsDuplicate } from "../../utils/containsDuplicate";
-import { AlertWithLink } from "../alerts/AlertWithLink";
 import { useEmployeeStore } from "../../store/employeeStore";
 import * as blobUtil from "blob-util";
+import { setDataUrlFromBlob } from "../../utils/setDataUrlFromBlob";
+import { useProjectStore } from "../../store/projectStore";
 
 export const CreateEmployeeModal = ( { ...props } ) => {
-  const currentEmployees = useEmployeeStore( state => state.employees )
+  const currentEmployees = useEmployeeStore( state => state.employees );
+  const currentProjects = useProjectStore( state => state.projects);
+  const fetchCurrentProjects = useProjectStore( state => state.fetchProjects)
   const [ employee, setEmployee ] = useState( { ...employeeModel } );
-  const [ alertData, setAlertData ] = useState( { show: false, textInLink: '', id: null } )
-  const [ employeeId, setEmployeeId ] = useState( null );
-  const [ showSuccess, setShowSuccess ] = useState( false );
-  const [ emailExists, setEmailExists ] = useState( false );
-  const [ blob, setBlob ] = useState( new Blob() );
+  const [ alertData, setAlertData ] = useState( {
+    success: false,
+    successText: '',
+    emailExists: false,
+    id: null
+  } )
   const [ dataUrl, setDataUrl ] = useState( null );
 
-  const handleEmployeeChange = e => {
-    let value = e.target.value;
-
-    if ( e.target.type === 'number' ) {
-      value = parseInt( value );
-    }
-
-    if ( e.target.name === 'currentProjectIds' ) {
-      return setEmployee( { ...employee, [e.target.name]: [ ...employee.currentProjectIds, value ] } )
-    }
-
-    setEmployee( { ...employee, [e.target.name]: value } )
-  }
-
-  const addEmployee = async () => {
-
-    if ( containsDuplicate( currentEmployees, 'email', employee.email ) ) {
-      return setEmailExists( true );
-    }
-
-    const { id } = await addEmployeeToDb( employee );
-    if ( id ) {
-      console.log( 'added employee: ', employee );
-      setEmployee( { ...employeeModel } );
-      setShowSuccess( true )
-      setEmailExists( false );
-      setEmployeeId( id );
-      setTimeout( () => {
-        setShowSuccess( false )
-        setEmployeeId( null )
-      }, 3000 );
-
+  const validateEmail = e => {
+    if ( containsDuplicate( currentEmployees, 'email', e.target.value ) ) {
+      console.log( 'duplicate found', alertData );
+      setAlertData( { ...alertData, emailExists: true } );
     } else {
-      console.log( 'could not add employee...' )
+      console.log( 'no duplicate' )
+      setAlertData( { ...alertData, emailExists: false } );
     }
   }
 
   async function encodeImageFileAsBlob( element ) {
     const file = element.files[0];
-    console.log('file: ', file);
     const reader = new FileReader();
     reader.onloadend = function () {
       const result = reader.result;
-      const blob = blobUtil.arrayBufferToBlob( result, file.type,  );
-      setEmployee({...employee, imageBlob: blob});
+      const blob = blobUtil.arrayBufferToBlob( result, file.type, );
+      console.log( 'blob: ', blob );
+      setEmployee( { ...employee, imageBlob: blob } );
     }
     reader.readAsDataURL( file );
   }
 
-  const getDataUrlFromBlob = async ( blob ) => {
-    let dataURL = await blobUtil.blobToBinaryString( blob );
-    setDataUrl( dataURL );
-    console.log( 'dataUrl: ', dataURL )
-    return dataURL;
+  const handleEmployeeChange = e => {
+    let value = e.target.value;
+    if ( e.target.type === 'number' ) {
+      value = parseInt( value );
+    }
+    if ( e.target.name === 'projectIds' ) {
+      return setEmployee( { ...employee, [e.target.name]: [ ...employee.projectIds, value ] } )
+    }
+    if ( e.target.name === 'email' ) {
+      validateEmail( e );
+    }
+    setEmployee( { ...employee, [e.target.name]: value } )
   }
 
-  getDataUrlFromBlob( employee.imageBlob );
+  const addEmployee = async () => {
+    if ( alertData.emailExists ) {
+      return setAlertData( { emailExists: true, ...alertData } );
+    }
+    try {
+      const { id } = await addEmployeeToDb( employee );
+      if ( id ) {
+        setAlertData( {
+          show: true,
+          successText: `Added employee ${ employee.firstName }`,
+          emailExists: false,
+          id: employee.id
+        } );
+        setEmployee( { ...employeeModel } );
+        setTimeout( () => {
+          setAlertData( { show: false, ...alertData } );
+        }, 2500 );
+      } else {
+        console.log( 'could not add employee...' )
+      }
+    } catch (e) {
+      console.error( e )
+    }
+  }
 
   const fileRef = useRef( null );
+
+  useEffect( () => {
+    setDataUrlFromBlob( employee.imageBlob, setDataUrl )
+  }, [ employee.imageBlob ] )
+
+  useEffect(() => {
+    fetchCurrentProjects();
+  }, [])
 
   return (
       <Modal
@@ -89,11 +104,13 @@ export const CreateEmployeeModal = ( { ...props } ) => {
             Add new Employee
           </Modal.Title>
         </Modal.Header>
+
         <Modal.Body>
           <Form onSubmit={ ( e ) => {
             e.preventDefault();
             addEmployee();
           } }>
+
             <Form.Row>
               <Form.Group as={ Col } controlId="firstName">
                 <Form.Label>First name:</Form.Label>
@@ -116,33 +133,55 @@ export const CreateEmployeeModal = ( { ...props } ) => {
                     placeholder="Doe"
                     required
                 />
-
               </Form.Group>
             </Form.Row>
 
-            <Form.Group controlId="email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                  onChange={ e => handleEmployeeChange( e ) }
-                  name={ 'email' }
-                  value={ employee.email }
-                  type="email"
-                  placeholder="john.doe@mail.com"
-                  required
-              />
-              {
-                emailExists &&
-                <Form.Text id="emailExistsText" type={ 'invalid' }>
-                  <Alert style={ { padding: 10, width: 'fit-content' } } variant={ 'warning' }>
-                    This email already exists, choose new one!
-                  </Alert>
-                </Form.Text>
-              }
-            </Form.Group>
+            <Form.Row>
+              <Form.Group as={Col} controlId="email">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                    onChange={ e => handleEmployeeChange( e ) }
+                    name={ 'email' }
+                    value={ employee.email }
+                    type="email"
+                    placeholder="john.doe@mail.com"
+                    required
+                />
+                <Alert
+                    className={ 'mr-auto py-1 px-2 my-2' }
+                    show={ alertData.emailExists }
+                    style={ { padding: 10, width: 'fit-content' } }
+                    variant={ 'warning' }>
+                  ✋ This email already exists, choose new one!
+                </Alert>
+              </Form.Group>
+
+              <Form.Group as={ Col } controlId="formGridState">
+                <Form.Label>Project</Form.Label>
+                <Form.Control
+                    onChange={ e => handleEmployeeChange( e ) }
+                    as="select"
+                    defaultValue="Choose..."
+                    name={ 'projectIds' }
+                >
+                  <option>Choose...</option>
+                  {
+                    currentProjects.map( e => (
+                        <option
+                            key={ e.id }
+                            value={ e.id }
+                        >
+                          { e.name }
+                        </option>
+                    ) )
+                  }
+                </Form.Control>
+              </Form.Group>
+
+            </Form.Row>
 
             <Form.Row>
-
-              <Form.Group controlId="age">
+              <Form.Group as={ Col } controlId="age">
                 <Form.Label>Age</Form.Label>
                 <Form.Control
                     onChange={ e => handleEmployeeChange( e ) }
@@ -153,8 +192,7 @@ export const CreateEmployeeModal = ( { ...props } ) => {
                     required
                 />
               </Form.Group>
-
-              <Form.Group controlId="position">
+              <Form.Group as={ Col } controlId="position">
                 <Form.Label>Position</Form.Label>
                 <Form.Control as={ 'select' }
                               onChange={ e => handleEmployeeChange( e ) }
@@ -170,9 +208,11 @@ export const CreateEmployeeModal = ( { ...props } ) => {
                   <option value={ 'Designer' }>Designer</option>
                 </Form.Control>
               </Form.Group>
+            </Form.Row>
 
-              <Form.Group style={{display: 'flex'}}>
-                <div >
+            <Form.Row className={'my-4'}>
+              <Form.Group as={ Col } >
+                <div style={{flexDirection: 'column', height:'100%', display: 'flex', justifyContent: 'space-around'}}>
                 <Form.Label>Upload image</Form.Label>
                 <Form.Control
                     ref={ fileRef }
@@ -181,21 +221,35 @@ export const CreateEmployeeModal = ( { ...props } ) => {
                     onChange={ () => encodeImageFileAsBlob( fileRef.current ) }
                 />
                 </div>
-                <img style={ { objectFit: 'cover', border: '1px solid', borderRadius: 100, overflow: 'hidden' } }
-                     width={ 100 } height={ 100 } src={ dataUrl }/>
+              </Form.Group>
+              <Form.Group as={Col}>
+                <div style={{ height:'100%', display: 'flex', justifyContent: 'center'}}>
+                  {
+                    dataUrl
+                    ? <img
+                            className={'m-auto'}
+                            style={ { objectFit: 'cover', border: '1px solid', borderRadius: 100, overflow: 'hidden' } }
+                            alt={ 'employee' }
+                            width={ 100 }
+                            height={ 100 }
+                            src={ dataUrl }
+                        />
+                        : <p>Please select a photo..</p>
+                  }
+                </div>
               </Form.Group>
             </Form.Row>
+
             <Button type={ 'submit' }>Add employee</Button>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <AlertWithLink
-              text={ 'Added new employee' }
-              linkTo={ `/employees/${ employeeId }` }
-              linkText={ `${ employee.firstName } ${ employee.lastName }` }
-              variant={ 'success' }
-              show={ showSuccess }
-          />
+          <Alert
+              className={ 'mr-auto py-1 px-2' }
+              show={ alertData.success }
+              variant={ 'success' }>
+            { alertData.successText }
+          </Alert>
           <Button variant={ 'secondary' } onClick={ props.onHide }>Close</Button>
         </Modal.Footer>
       </Modal>

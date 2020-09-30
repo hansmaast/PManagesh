@@ -10,10 +10,14 @@ export const useCustomerStore = create( set => ( {
   },
   fetchCustomers: async () => {
     const response = await getCustomers();
-    set( { customers: [ ...response ] } )
+    set( {
+          customers: [ ...response ],
+          filteredCustomers: [ ...response ]
+        }
+    )
   },
   fetchCustomerProjects: async customer => {
-    const projects = await getProjectsFromCustomer(customer);
-    set( { customerProjects: projects });
+    const projects = await getProjectsFromCustomer( customer );
+    set( { customerProjects: projects } );
   }
 } ) )

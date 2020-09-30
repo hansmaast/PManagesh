@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Container from "react-bootstrap/Container";
 import { CreateProjectModal } from "../../components/modals/CreateProjectModal";
 import { PlusButton } from "../../components/buttons/PlusButton";
 import ProjectCard from "../../components/cards/ProjectCard";
-import { largeScreen } from "../../style/dimensions";
 import { Flex } from "../../components/wrappers/Flex";
 import { StatusFilter } from "../../components/inputs/StatusFilter";
 import { useStatusFilter } from "../../utils/hooks/useStatusFilter";

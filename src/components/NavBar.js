@@ -6,27 +6,27 @@ import { navBarColor } from "../style/colors";
 import { largeScreen } from "../style/dimensions";
 import { SearchInput } from "./inputs/SearchInput";
 import { useSearchArray } from "../utils/hooks/useSearchArray";
-import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useProjectStore } from "../store/projectStore";
 import { useEmployeeStore } from "../store/employeeStore";
+import { useCustomerStore } from "../store/customerStore";
 
 export default () => {
 
   const [ searchTerm, setSearchTerm ] = useState( '' );
 
-  let { pathname } = useLocation();
+  const projects = useProjectStore( state => state.projects );
+  const setFilteredProjects = useProjectStore( state => state.setFilteredProjects );
+  useSearchArray( projects, 'name', searchTerm, setFilteredProjects );
 
-  if ( pathname.includes( '/projects' ) ) {
-    const projects = useProjectStore( state => state.projects );
-    const setFilteredProjects = useProjectStore( state => state.setFilteredProjects );
-    useSearchArray( projects, 'name', searchTerm, setFilteredProjects );
-  }
+  const employees = useEmployeeStore( state => state.employees );
+  const setFilteredEmployees = useEmployeeStore( state => state.setFilteredEmployees );
+  useSearchArray( employees, 'firstName', searchTerm, setFilteredEmployees );
 
-  if ( pathname.includes( '/employees' ) ) {
-    const employees = useEmployeeStore( state => state.employees );
-    const setFilteredEmployees = useEmployeeStore( state => state.setFilteredEmployees );
-    useSearchArray( employees, 'firstName', searchTerm, setFilteredEmployees );
-  }
+  const customers = useCustomerStore( state => state.customers );
+  const setFilteredCustomers = useCustomerStore( state => state.setFilteredCustomers );
+  useSearchArray( customers, 'name', searchTerm, setFilteredCustomers );
+
 
   const navStyle = { width: '100%', maxWidth: largeScreen };
 
@@ -47,9 +47,18 @@ export default () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href="/projects">Projects</Nav.Link>
-              <Nav.Link href="/employees">Employees</Nav.Link>
-              <Nav.Link href="/customers">Customers</Nav.Link>
+
+                <Link className={'ml-4'} to="/projects">Projects</Link>
+
+
+                <Link className={'ml-4'} to={ '/employees' }>Employees</Link>
+
+
+                <Link className={'ml-4'} to={ '/customers' }>Customers</Link>
+
+            </Nav>
+            <Nav className={ 'ml-auto' }>
+                <Link className={'mr-4'} to={ '/' }>Home</Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>

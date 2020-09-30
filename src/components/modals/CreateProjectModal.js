@@ -33,13 +33,13 @@ export const CreateProjectModal = props => {
   const addProject = async () => {
     const { id } = await addProjectToDb( project );
     setAlertData( {
-      show: true,
-      text: `Yey! ${ project.name } saved..💾`,
+      success: true,
+      successText: `Yey! ${ project.name } saved..💾`,
       id: id
     } );
     setProject( { ...projectModel } );
     setTimeout( () => {
-      setAlertData( { show: false, ...alertData } )
+      setAlertData( { success: false, ...alertData } )
     }, 2500 );
   }
 

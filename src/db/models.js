@@ -20,5 +20,5 @@ export const employeeModel = {
   age: '',
   position: '',
   projectIds: [],
-  imageBlob: new Blob()
+  imageBlob: null
 }

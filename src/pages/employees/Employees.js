@@ -1,19 +1,19 @@
 import React, { useEffect } from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
-import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import { CreateEmployeeModal } from "../../components/modals/CreateEmployeeModal";
 import { EmployeeDetails } from "../index";
 import { ScrollRowArrows } from "../../components/wrappers/ScrollRowArrows";
 import { PlusButton } from "../../components/buttons/PlusButton";
-import { useSearchArray } from "../../utils/hooks/useSearchArray";
 import { useEmployeeStore } from "../../store/employeeStore";
 import MainWrapper from "../../components/wrappers/MainWrapper";
+import { useScreenProperties } from "../../store/screenProperties";
 
 export default () => {
 
   const fetchEmployees = useEmployeeStore( state => state.fetchEmployees );
   const filteredEmployees = useEmployeeStore( state => state.filteredEmployees );
+  const isSmallScreen = useScreenProperties( state => state.isSmallScreen )
 
   const [ showModal, setShowModal ] = React.useState( false );
   let { path } = useRouteMatch();
@@ -28,27 +28,29 @@ export default () => {
         <div>
           <h1> Employees </h1>
           <Row className={ 'px-3' }>
-            <PlusButton onClick={ () => setShowModal( showModal ) }/>
+            <PlusButton onClick={ () => setShowModal( true ) }/>
           </Row>
           <ScrollRowArrows data={ filteredEmployees }/>
-          <CreateEmployeeModal
-              show={ showModal }
-              onHide={ () => {
-                setShowModal( false );
-                fetchEmployees();
-              } }
-          />
         </div>
 
+
+        { !isSmallScreen &&
         <div>
-        <Switch>
-          <Route path={ `${ path }/:id` }>
-            <EmployeeDetails/>
-          </Route>
-        </Switch>
+          <Switch>
+            <Route path={ `${ path }/:id` }>
+              <EmployeeDetails/>
+            </Route>
+          </Switch>
         </div>
+        }
+
+        <CreateEmployeeModal
+            show={ showModal }
+            onHide={ () => {
+              setShowModal( false );
+              fetchEmployees();
+            } }
+        />
       </MainWrapper>
   );
 };
-
-// TODO: Add assign project to employee functionality

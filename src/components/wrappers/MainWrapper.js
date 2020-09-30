@@ -4,7 +4,7 @@ import Container from "react-bootstrap/Container";
 
 const MainWrapper = ({children}) => {
   return (
-      <Container className={ 'px-5 py-5' } style={ { maxWidth: largeScreen, paddingTop: 40 } }>
+      <Container className={ 'px-5 py-5' } style={ { maxWidth: largeScreen, marginTop: 70 } }>
         {children}
       </Container>
   );

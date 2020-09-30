@@ -4,43 +4,55 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import NotFound from "./components/NotFound";
 import { initDb } from "./db/utils/initDb";
 
-import { Customers, EmployeeDetails, Employees, Home, ProjectDetails, Projects, } from "./pages";
-import Team from "../src/pages/Team";
+import { Customers, Employees, Home, Projects, } from "./pages";
 import { BackgroundImage } from "./components/wrappers/BackgroundImage";
+import { useScreenProperties } from "./store/screenProperties";
 
 function App() {
-  useEffect(() => {
+
+  const setScreenWidth = useScreenProperties( state => state.setWidth );
+  const setScreenHeight = useScreenProperties( state => state.setHeight );
+  const setIsSmallScreen = useScreenProperties( state => state.setIsSmallScreen );
+
+  window.onresize = () => {
+    setScreenWidth();
+    setScreenHeight();
+    setIsSmallScreen();
+  }
+
+  useEffect( () => {
     const init = async () => {
       await initDb();
     };
     init();
+    setIsSmallScreen();
   }, [] );
 
   return (
-    <>
-      <BrowserRouter>
-        <BackgroundImage>
-        <NavBar/>
-        <Switch>
-          <Route path="/projects">
-            <Projects />
-          </Route>
-          <Route path="/employees">
-            <Employees />
-          </Route>
-          <Route  path="/customers">
-            <Customers />
-          </Route>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path={"*"}>
-            <NotFound />
-          </Route>
-        </Switch>
-      </BackgroundImage>
-      </BrowserRouter>
-    </>
+      <>
+        <BrowserRouter>
+          <BackgroundImage>
+            <NavBar/>
+            <Switch>
+              <Route path="/projects">
+                <Projects/>
+              </Route>
+              <Route path="/employees">
+                <Employees/>
+              </Route>
+              <Route path="/customers">
+                <Customers/>
+              </Route>
+              <Route exact path="/">
+                <Home/>
+              </Route>
+              <Route path={ "*" }>
+                <NotFound/>
+              </Route>
+            </Switch>
+          </BackgroundImage>
+        </BrowserRouter>
+      </>
   );
 }
 
