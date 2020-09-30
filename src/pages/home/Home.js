@@ -11,8 +11,8 @@ const Scaleotron = ( { linkTo, title, text, buttonText } ) => {
 
   return (
       <ScaleOnHover ms={ 100 } scaleTo={ 1.02 }>
-        <Link to={ linkTo } style={ { textDecoration: 'none' } }>
-          <Jumbotron style={ { textDecoration: 'none' } }>
+        <Link to={ linkTo } style={ { textDecoration: 'none', width: 'fit-content'} }>
+          <Jumbotron className={'mx-auto'} style={ { textDecoration: 'none', maxWidth: 700 } }>
             <h1>{ title }</h1>
             <p>
               { text }

@@ -1,4 +1,3 @@
-export const navBarColor = '#f8f9fa';
 
 export const statusColor = {
   done: '#c8f5a2',
@@ -6,5 +5,4 @@ export const statusColor = {
   notStarted: '#f67967',
 }
 
-export const dark = '#0c0c0c'
-export const darkLight = '#555555'
+export const navBarColor = '#f8f9fa';

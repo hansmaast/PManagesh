@@ -34,13 +34,13 @@ function App() {
           <BackgroundImage>
             <NavBar/>
             <Switch>
-              <Route path="/projects">
+              <Route exact path="/projects">
                 <Projects/>
               </Route>
               <Route path="/employees">
                 <Employees/>
               </Route>
-              <Route path="/customers">
+              <Route exact path="/customers">
                 <Customers/>
               </Route>
               <Route exact path="/">

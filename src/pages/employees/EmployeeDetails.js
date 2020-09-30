@@ -46,7 +46,7 @@ export default () => {
         <ul>
           {
             projects.length > 0
-                ? projects.map( p => <li>{p.name}</li>)
+                ? projects.map( p => <li key={p.id}>{p.name}</li>)
                 : <p>None..</p>
 
           }

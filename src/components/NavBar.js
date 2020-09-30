@@ -3,7 +3,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { Flex } from "./wrappers/Flex";
 import { navBarColor } from "../style/colors";
-import { largeScreen } from "../style/dimensions";
+import { largeScreen, navBarHeight } from "../style/dimensions";
 import { SearchInput } from "./inputs/SearchInput";
 import { useSearchArray } from "../utils/hooks/useSearchArray";
 import { Link } from "react-router-dom";
@@ -28,7 +28,7 @@ export default () => {
   useSearchArray( customers, 'name', searchTerm, setFilteredCustomers );
 
 
-  const navStyle = { width: '100%', maxWidth: largeScreen };
+  const navStyle = { width: '100%', maxWidth: largeScreen, height: navBarHeight };
 
   return (
       <Flex zIndex={ 100 }
@@ -48,17 +48,17 @@ export default () => {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
 
-                <Link className={'ml-4'} to="/projects">Projects</Link>
+                <Link className={'ml-4 my-2'} to="/projects">Projects</Link>
 
 
-                <Link className={'ml-4'} to={ '/employees' }>Employees</Link>
+                <Link className={'ml-4 my-2'} to={ '/employees' }>Employees</Link>
 
 
-                <Link className={'ml-4'} to={ '/customers' }>Customers</Link>
+                <Link className={'ml-4 my-2'} to={ '/customers' }>Customers</Link>
 
             </Nav>
             <Nav className={ 'ml-auto' }>
-                <Link className={'mr-4'} to={ '/' }>Home</Link>
+                <Link className={'ml-4 my-4'} to={ '/' }>Home</Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>

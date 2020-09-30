@@ -40,33 +40,5 @@
     "lastName": "Oaks",
     "email": "woaks5@tinypic.com",
     "projectIds": [2, 4, 1]
-  },
-  {
-    "id": 7,
-    "firstName": "Suzanna",
-    "lastName": "De Carteret",
-    "email": "sdecarteret6@nhs.uk",
-    "projectIds": [2, 4, 1]
-  },
-  {
-    "id": 8,
-    "firstName": "Alphonso",
-    "lastName": "Bertram",
-    "email": "abertram7@aol.com",
-    "projectIds": [2, 4, 1]
-  },
-  {
-    "id": 9,
-    "firstName": "Burg",
-    "lastName": "Harrington",
-    "email": "bharrington8@youtu.be",
-    "projectIds": [2, 4, 1]
-  },
-  {
-    "id": 10,
-    "firstName": "Terri",
-    "lastName": "Kemer",
-    "email": "tkemer9@abc.net.au",
-    "projectIds": [2, 4, 1]
   }
 ]

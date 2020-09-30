@@ -34,29 +34,5 @@
     "name": "Feest-Mills",
     "projectIds": [2, 4, 1],
     "email": "test@mail.com"
-  },
-  {
-    "id": 7,
-    "name": "Schimmel-Nolan",
-    "projectIds": [2, 4, 1],
-    "email": "test@mail.com"
-  },
-  {
-    "id": 8,
-    "name": "Lynch LLC",
-    "projectIds": [2, 4, 1],
-    "email": "test@mail.com"
-  },
-  {
-    "id": 9,
-    "name": "Shanahan Group",
-    "projectIds": [2, 4, 1],
-    "email": "test@mail.com"
-  },
-  {
-    "id": 10,
-    "name": "Stiedemann-Cartwright",
-    "projectIds": [2, 4, 1],
-    "email": "test@mail.com"
   }
 ]

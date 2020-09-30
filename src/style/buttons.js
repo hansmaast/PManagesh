@@ -8,6 +8,7 @@ export const baseButtonStyle = {
   border: 'none',
 
 };
+
 export const leftButtonStyle = {
   ...baseButtonStyle,
   left: 0,

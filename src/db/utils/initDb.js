@@ -10,11 +10,7 @@ import { initAvatars } from "../fakeData/employeePhotos";
 async function initDataToTable( dataSet, table ) {
   for ( const [ index, data ] of dataSet.entries() ) {
     if ( table === employeeTable ) {
-
       data.imageBlob = await blobUtil.imgSrcToBlob( initAvatars[index], 'image/svg' );
-
-      console.log('imge blob: ', data.imageBlob);
-
     }
     const { idWithPrefix } = await generateIdFor( table );
     await table.setItem( idWithPrefix, data );
@@ -22,7 +18,7 @@ async function initDataToTable( dataSet, table ) {
 }
 
 export const initDb = async () => {
-  if ( await costumerTable.length() < 10 ) {
+  if ( await costumerTable.length() < 6 ) {
     try {
 
       await initDataToTable( Projects, projectTable );

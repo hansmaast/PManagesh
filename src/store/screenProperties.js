@@ -1,15 +1,12 @@
 import create from 'zustand'
-
-window.onresize = () => {
-  console.log( 'global screen: ', window.innerWidth );
-}
+import { smallScreen } from "../style/dimensions";
 
 export const useScreenProperties = create( set => ( {
   width: window.innerWidth,
   height: window.innerHeight,
   isSmallScreen: false,
   setIsSmallScreen: (s) => {
-    window.innerWidth < 795
+    window.innerWidth < smallScreen
         ? set( { isSmallScreen: true } )
         : set( { isSmallScreen: false } )
   },

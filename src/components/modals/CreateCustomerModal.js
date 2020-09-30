@@ -5,6 +5,7 @@ import { customerModel } from "../../db/models";
 import { containsDuplicate } from "../../utils/containsDuplicate";
 import { useCustomerStore } from "../../store/customerStore";
 import { useProjectStore } from "../../store/projectStore";
+import { AlertInModal } from "../alerts/AlertInModal";
 
 export const CreateCustomerModal = ( { ...props } ) => {
 
@@ -12,22 +13,24 @@ export const CreateCustomerModal = ( { ...props } ) => {
   const currentProjects = useProjectStore( state => state.projects);
   const fetchCurrentProjects = useProjectStore( state => state.fetchProjects)
   const [customer, setCustomer] = useState({...customerModel})
-  const [ emailExists, setEmailExists ] = useState( false );
-  const [ showSuccess, setShowSuccess ] = useState( false );
+  const [ alertData, setAlertData ] = useState( {
+    show: false,
+    successText: '',
+    emailExists: false,
+  } )
 
   const handleSubmit = async () => {
 
     if ( containsDuplicate( currentCustomers, 'email', customer.email ) ) {
-      return setEmailExists( true );
+      return setAlertData({...alertData, emailExists: true});
     }
 
     const { id } = await addCostumerToDb(customer);
     if ( id ) {
+      setAlertData({show: true, successText: `Added ${customer.name} to customers!`})
       setCustomer( { ...customerModel } );
-      setShowSuccess( true )
-      setEmailExists( false );
       setTimeout( () => {
-        setShowSuccess( false )
+        setAlertData({...alertData, show: false})
       }, 2500 );
     } else {
       console.log( 'could not add customer...' )
@@ -81,7 +84,7 @@ export const CreateCustomerModal = ( { ...props } ) => {
                   required
               />
               {
-                emailExists &&
+                alertData.emailExists &&
                 <Form.Text id="emailExistsText" type={ 'invalid' }>
                   <Alert style={ { padding: 10, width: 'fit-content' } } variant={ 'warning' }>
                     This email already exists, choose new one!
@@ -117,12 +120,9 @@ export const CreateCustomerModal = ( { ...props } ) => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Alert
-              variant={ 'success' }
-              show={ showSuccess }
-          >
-            'Added new customer'
-          </Alert>
+          <AlertInModal
+            alertData={alertData}
+          />
           <Button variant={ 'secondary' } onClick={ props.onHide }>Close</Button>
         </Modal.Footer>
       </Modal>

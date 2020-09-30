@@ -7,6 +7,7 @@ import { useEmployeeStore } from "../../store/employeeStore";
 import * as blobUtil from "blob-util";
 import { setDataUrlFromBlob } from "../../utils/setDataUrlFromBlob";
 import { useProjectStore } from "../../store/projectStore";
+import { AlertInModal } from "../alerts/AlertInModal";
 
 export const CreateEmployeeModal = ( { ...props } ) => {
   const currentEmployees = useEmployeeStore( state => state.employees );
@@ -244,12 +245,7 @@ export const CreateEmployeeModal = ( { ...props } ) => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Alert
-              className={ 'mr-auto py-1 px-2' }
-              show={ alertData.success }
-              variant={ 'success' }>
-            { alertData.successText }
-          </Alert>
+         <AlertInModal alertData={alertData}/>
           <Button variant={ 'secondary' } onClick={ props.onHide }>Close</Button>
         </Modal.Footer>
       </Modal>

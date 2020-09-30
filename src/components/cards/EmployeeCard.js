@@ -37,7 +37,7 @@ const EmployeeCard = ( { smallScreen, employee, refProp } ) => {
                 <div style={ { display: 'flex', alignItems: 'center', justifyContent: 'space-between' } }>
                   <Card.Title className={ 'm-0' }>{ firstName } { lastName } </Card.Title>
 
-                  <img style={ { objectFit: 'cover', border: '1px solid', borderRadius: 100, overflow: 'hidden' } }
+                  <img style={ { objectFit: 'cover', borderRadius: 100, overflow: 'hidden' } }
                        height={ 50 }
                        width={ 50 }
                        alt={ 'employee' }

@@ -4,11 +4,11 @@ import { addProjectToDb } from "../../db/actions";
 import { projectModel } from "../../db/models";
 import { useCustomerStore } from "../../store/customerStore";
 import { useEmployeeStore } from "../../store/employeeStore";
-import Alert from "react-bootstrap/Alert";
+import { AlertInModal } from "../alerts/AlertInModal";
 
 export const CreateProjectModal = props => {
   const [ project, setProject ] = useState( { ...projectModel } );
-  const [ alertData, setAlertData ] = useState( { show: false, text: '', id: null } )
+  const [ alertData, setAlertData ] = useState( { show: false, successText: '', id: null } )
 
   const customers = useCustomerStore( state => state.customers );
   const fetchCustomers = useCustomerStore( state => state.fetchCustomers );
@@ -104,6 +104,7 @@ export const CreateProjectModal = props => {
                   name={ 'description' }
                   as="textarea"
                   rows="3"
+                  required
               />
             </Form.Group>
 
@@ -153,12 +154,7 @@ export const CreateProjectModal = props => {
         </Modal.Body>
 
         <Modal.Footer className={ 'px-4' }>
-          <Alert
-              className={ 'mr-auto py-1 px-2' }
-              show={ alertData.show }
-              variant={ 'success' }>
-            { alertData.text }
-          </Alert>
+          <AlertInModal alertData={ alertData }/>
           <Button variant={ 'secondary' } onClick={ props.onHide }>Close</Button>
         </Modal.Footer>
       </Modal>

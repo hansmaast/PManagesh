@@ -1,7 +1,6 @@
 import { statusColor } from "../colors";
 
 export const getStatusColor = status => {
-
   switch (status.toLowerCase()) {
     case 'done':
       return  statusColor.done;

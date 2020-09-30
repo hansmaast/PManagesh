@@ -6,6 +6,7 @@ import { ArrowButton } from "../buttons/ArrowButton";
 import EmployeeCard from "../cards/EmployeeCard";
 import { scrollElementWidth } from "../../utils/scrollElementWidth";
 import { useScreenProperties } from "../../store/screenProperties";
+import NoMatchOrEmpty from "../alerts/NoMatchOrEmpty";
 
 
 export const ScrollRowArrows = ( { data } ) => {
@@ -23,17 +24,20 @@ export const ScrollRowArrows = ( { data } ) => {
   const cardRef = useRef( null );
   const rowRef = useRef( null );
 
-  const isSmallScreen = useScreenProperties(state => state.isSmallScreen);
+  const isSmallScreen = useScreenProperties( state => state.isSmallScreen );
 
-  if (!isSmallScreen) {
+  if ( !isSmallScreen ) {
     return (
-        <div className={ 'mx-5' } style={ { position: 'relative'} }>
+        <div className={ 'mx-5' } style={ { position: 'relative' } }>
           <ArrowButton left size={ 42 } onClick={ () => scrollElementWidth( false, 2, cardRef, rowRef ) }/>
           <div ref={ rowRef } style={ containerStyle }>
-            { !data && <h3 className={ 'm-auto' }>Click the + to create a project!</h3> }
-            { data && data.length === 0 && <h4 className={ 'm-auto' }>No match found..<Search/></h4> }
+
+            { data.length === 0 &&
+              <NoMatchOrEmpty/>
+            }
             { data &&
-            data.map( p => <EmployeeCard smallScreen={isSmallScreen} key={ p.id } refProp={ cardRef } employee={ p }/> )
+            data.map( p => <EmployeeCard smallScreen={ isSmallScreen } key={ p.id } refProp={ cardRef }
+                                         employee={ p }/> )
             }
           </div>
           <ArrowButton right size={ 42 } onClick={ () => scrollElementWidth( true, 2, cardRef, rowRef ) }/>
@@ -41,13 +45,13 @@ export const ScrollRowArrows = ( { data } ) => {
     );
   }
 
-  if (isSmallScreen) {
+  if ( isSmallScreen ) {
     return (
-        <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
+        <div style={ { display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' } }>
           { !data && <h3 className={ 'm-auto' }>Click the + to add!</h3> }
           { data && data.length === 0 && <h4 className={ 'm-auto' }>No match found..<Search/></h4> }
           { data &&
-          data.map( p => <EmployeeCard smallScreen={isSmallScreen} key={ p.id } refProp={ cardRef } employee={ p }/> )
+          data.map( p => <EmployeeCard smallScreen={ isSmallScreen } key={ p.id } refProp={ cardRef } employee={ p }/> )
           }
         </div>
     )
