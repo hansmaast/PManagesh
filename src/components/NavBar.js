@@ -28,7 +28,7 @@ export default () => {
   useSearchArray( customers, 'name', searchTerm, setFilteredCustomers );
 
 
-  const navStyle = { width: '100%', maxWidth: largeScreen, height: navBarHeight };
+  const navStyle = { width: '100%', maxWidth: largeScreen, minHeight: navBarHeight };
 
   return (
       <Flex zIndex={ 100 }
