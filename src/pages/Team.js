@@ -1,6 +1,6 @@
 import React from "react";
-import { Container, Col, Row, Image, Card, CardDeck } from "react-bootstrap";
-import { User, GitHub } from "react-feather";
+import { Card, CardDeck, Col, Row } from "react-bootstrap";
+import { GitHub, User } from "react-feather";
 
 const Team = () => {
   return (

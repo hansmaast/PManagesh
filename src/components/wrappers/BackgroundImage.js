@@ -1,4 +1,4 @@
-import backgroundImage from "../../images/bady-abbas-hxi_yRxODNc-unsplash.jpg";
+import backgroundImage from "../../style/images/Pattern-Randomized.svg";
 import React from "react";
 
 export const BackgroundImage = ( { children } ) => {

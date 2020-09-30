@@ -9,7 +9,7 @@ export const getProjects = async () => {
   return await getAllFrom( projectTable );
 }
 
-export const getCostumers = async () => {
+export const getCustomers = async () => {
   return await getAllFrom( costumerTable );
 }
 
@@ -19,6 +19,14 @@ export const getEmployees = async () => {
 
 export const getEmployeesFromProject = async ( { employeeIds } ) => {
   return await getByIdsFromTable( employeeIds, employeeTable );
+}
+
+export const getProjectsFromEmployee = async ( { projectIds } ) => {
+  return await getByIdsFromTable( projectIds, projectTable );
+}
+
+export const getProjectsFromCustomer = async ( { projectIds } ) => {
+  return await getByIdsFromTable( projectIds, projectTable );
 }
 
 export const getProjectDetails = async id => {

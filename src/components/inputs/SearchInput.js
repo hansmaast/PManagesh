@@ -1,16 +1,15 @@
 import FormControl from "react-bootstrap/FormControl";
 import { Search } from "react-feather";
-import Form from "react-bootstrap/Form";
 import React from "react";
 import PropTypes from "prop-types";
 
-export const SearchInput = ( { value, onChange } ) => {
+export const SearchInput = ( { value, onChange, ...props } ) => {
   return (
-      <Form className={ 'my-3' } inline>
+      <div style={{width: '100%', maxWidth: 200, display: 'flex', alignItems: 'center'}} {...props}>
         <FormControl value={ value } onChange={ e => onChange( e ) } type="text" placeholder="Search"
                      className="mr-2"/>
-        <Search/>
-      </Form>
+        <Search size={'2rem'}/>
+      </div>
   );
 }
 

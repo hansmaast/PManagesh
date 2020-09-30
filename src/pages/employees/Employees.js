@@ -1,47 +1,56 @@
-import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { Route, Switch, useRouteMatch } from "react-router-dom";
+import Row from "react-bootstrap/Row";
 import { CreateEmployeeModal } from "../../components/modals/CreateEmployeeModal";
-import { getEmployees } from "../../db/actions";
-import LayoutStyle from "../../components/LayoutStyle";
-import EmployeeCard from "../../components/Cards/EmployeeCard";
+import { EmployeeDetails } from "../index";
+import { ScrollRowArrows } from "../../components/wrappers/ScrollRowArrows";
+import { PlusButton } from "../../components/buttons/PlusButton";
+import { useEmployeeStore } from "../../store/employeeStore";
+import MainWrapper from "../../components/wrappers/MainWrapper";
+import { useScreenProperties } from "../../store/screenProperties";
 
 export default () => {
-  const [ employees, setEmployees ] = useState( [ {} ] );
-  const [ showModal, setShowModal ] = React.useState( false );
 
-  const getData = async () => {
-    const employees = await getEmployees();
-    setEmployees( [ ...employees ] );
-  };
+  const fetchEmployees = useEmployeeStore( state => state.fetchEmployees );
+  const filteredEmployees = useEmployeeStore( state => state.filteredEmployees );
+  const isSmallScreen = useScreenProperties( state => state.isSmallScreen )
+
+  const [ showModal, setShowModal ] = React.useState( false );
+  let { path } = useRouteMatch();
 
   useEffect( () => {
-    getData();
-  }, [] );
+    fetchEmployees();
+  }, [ fetchEmployees ] );
 
   return (
-      <div>
-        <br></br>
-        <h4 style={ { textAlign: "center" } }>Employees:</h4>
-        <br></br>
-        <LayoutStyle>
-          { employees.map( ( employee ) => {
-            return <EmployeeCard employee={ employee }/>;
-          } ) }
-        </LayoutStyle>
-        <br></br>
+      <MainWrapper>
 
-        <Button variant="primary" onClick={ () => setShowModal( true ) }>
-          Add new employee
-        </Button>
+        <div>
+          <h1> Employees </h1>
+          <Row className={ 'px-3' }>
+            <PlusButton onClick={ () => setShowModal( true ) }/>
+          </Row>
+          <ScrollRowArrows data={ filteredEmployees }/>
+        </div>
+
+
+        { !isSmallScreen &&
+        <div>
+          <Switch>
+            <Route path={ `${ path }/:id` }>
+              <EmployeeDetails/>
+            </Route>
+          </Switch>
+        </div>
+        }
 
         <CreateEmployeeModal
-            currentEmployees={ employees }
             show={ showModal }
             onHide={ () => {
-              getData();
               setShowModal( false );
+              fetchEmployees();
             } }
         />
-      </div>
+      </MainWrapper>
   );
 };

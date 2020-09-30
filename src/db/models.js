@@ -6,8 +6,10 @@ export const projectModel = {
   costumerId: ''
 }
 
-export const costumerModel = {
+export const customerModel = {
   name: '',
+  email: '',
+  projectIds: []
   //...more fields
 }
 
@@ -17,5 +19,6 @@ export const employeeModel = {
   lastName: '',
   age: '',
   position: '',
-  currentProjectIds: [],
+  projectIds: [],
+  imageBlob: null
 }

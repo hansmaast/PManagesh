@@ -1,42 +1,38 @@
 [
   {
     "id": 1,
-    "name": "Von, Ryan and Satterfield"
+    "name": "Von, Ryan and Satterfield",
+    "projectIds": [2, 4, 1],
+    "email": "test@mail.com"
   },
   {
     "id": 2,
-    "name": "Larkin-Gerhold"
+    "name": "Larkin-Gerhold",
+    "projectIds": [2, 4, 1],
+    "email": "test@mail.com"
   },
   {
     "id": 3,
-    "name": "Heller, Koepp and Abshire"
+    "name": "Heller, Koepp and Abshire",
+    "projectIds": [2, 4, 1],
+    "email": "test@mail.com"
   },
   {
     "id": 4,
-    "name": "Cruickshank LLC"
+    "name": "Cruickshank LLC",
+    "projectIds": [2, 4, 1],
+    "email": "test@mail.com"
   },
   {
     "id": 5,
-    "name": "Deckow LLC"
+    "name": "Deckow LLC",
+    "projectIds": [2, 4, 1],
+    "email": "test@mail.com"
   },
   {
     "id": 6,
-    "name": "Feest-Mills"
-  },
-  {
-    "id": 7,
-    "name": "Schimmel-Nolan"
-  },
-  {
-    "id": 8,
-    "name": "Lynch LLC"
-  },
-  {
-    "id": 9,
-    "name": "Shanahan Group"
-  },
-  {
-    "id": 10,
-    "name": "Stiedemann-Cartwright"
+    "name": "Feest-Mills",
+    "projectIds": [2, 4, 1],
+    "email": "test@mail.com"
   }
 ]

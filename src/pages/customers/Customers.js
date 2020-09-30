@@ -1,59 +1,46 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { addCostumerToDb, getCostumers } from "../../db/actions";
-import { containsDuplicate } from "../../utils/containsDuplicate";
-import LayoutStyle from "../../components/LayoutStyle";
-import CustomerCard from "../../components/Cards/CustomerCard";
+import CustomerCard from "../../components/cards/CustomerCard";
+import { useCustomerStore } from "../../store/customerStore";
+import { CreateCustomerModal } from "../../components/modals/CreateCustomerModal";
+import { PlusButton } from "../../components/buttons/PlusButton";
+import { Flex } from "../../components/wrappers/Flex";
+import MainWrapper from "../../components/wrappers/MainWrapper";
+import NoMatchOrEmpty from "../../components/alerts/NoMatchOrEmpty";
 
 export default () => {
-  const [costumers, setCostumers] = useState([]);
-  const [costumer, setCostumer] = useState({ name: "" });
+  const filteredCustomers = useCustomerStore( state => state.filteredCustomers );
+  const fetchCustomers = useCustomerStore( state => state.fetchCustomers );
+  const [ showModal, setShowModal ] = useState( false );
 
-  const fetchProjects = async () => {
-    const fromDb = await getCostumers();
-    fromDb.sort((a, b) => a.id < b.id);
-    console.log(fromDb);
-
-    setCostumers([...fromDb]);
-  };
-
-  function handleSubmit() {
-    return async (e) => {
-      e.preventDefault();
-      if (containsDuplicate(costumers, "name", costumer.name)) {
-        return alert("Costumer exists!");
-      }
-      await addCostumerToDb(costumer);
-      setCostumers([costumer, ...costumers]);
-      setCostumer({ name: "" });
-    };
-  }
-
-  useEffect(() => {
-    fetchProjects();
-  }, []);
+  useEffect( () => {
+    fetchCustomers();
+  }, [] );
 
   return (
-    <div>
-      <h4>Costumers:</h4>
-      <LayoutStyle>
-        {costumers.map((customer) => {
-          return <CustomerCard customer={customer} />;
-        })}
-      </LayoutStyle>
-      <form onSubmit={handleSubmit()}>
-        <h3>Add new costumer</h3>
-        <label htmlFor={"costumerName"}>
-          {" "}
-          Customer name:
-          <input
-            value={costumer.name}
-            required
-            onChange={(e) => setCostumer({ ...costumer, name: e.target.value })}
-          />
-        </label>
-        <input type={"submit"} value={"Add new costumer"} />
-      </form>
-    </div>
+      <MainWrapper>
+        <h1>Costumers</h1>
+        <Flex flexDirection={ 'row' } justifyContent={ 'space-between' }
+              alignItems={ 'center' }>
+
+          <PlusButton onClick={ () => setShowModal( true ) }/>
+        </Flex>
+        <Flex flexWrap={ 'wrap' } justifyContent={ 'center' }>
+          { filteredCustomers.length === 0 && (
+              <NoMatchOrEmpty/>
+          ) }
+          { filteredCustomers.map( ( customer, index ) => {
+            return <CustomerCard index={ index } customer={ customer }/>;
+          } ) }
+        </Flex>
+
+        <CreateCustomerModal show={ showModal } onHide={ () => {
+          setShowModal( false );
+          fetchCustomers();
+        } }/>
+
+
+      </MainWrapper>
+
+
   );
 };
